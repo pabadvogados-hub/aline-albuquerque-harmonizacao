@@ -13,3 +13,4 @@ video/tmp/
 criativos/*
 !criativos/.gitkeep
 .claude/settings.json.fabi
+video/trabalho/

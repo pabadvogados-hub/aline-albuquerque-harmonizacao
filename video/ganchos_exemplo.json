@@ -1,0 +1,106 @@
+{
+  "_leia": "5 angulos do docs/ESTUDO_DE_MERCADO.md (secao 6), 3 ganchos cada. O pipeline gera um video por gancho (_g1, _g2, _g3) com o mesmo corpo: suba os 3 no mesmo conjunto e o painel mostra qual para mais o dedo (taxa de gancho). *palavra* = destaque em rose/coral. Ganchos ja dentro das regras: terceira pessoa, sem 'voce + condicao', sem citar marca de remedio, sem promessa de resultado. 'etapas' sao exemplo: CONFIRMAR com a Aline as etapas reais do Metodo Fenix antes de usar --etapas.",
+  "angulos": [
+    {
+      "numero": 1,
+      "nome": "Nomear o problema",
+      "roteiro": "Ela mostra no proprio rosto onde o volume esvazia depois do emagrecimento e da nome: derretimento facial.",
+      "ganchos": [
+        {
+          "kicker": "Derretimento facial",
+          "text": "Isso tem nome. E *não é só flacidez*."
+        },
+        {
+          "kicker": "Pós-emagrecimento",
+          "text": "Quando o rosto *perde sustentação*"
+        },
+        {
+          "kicker": "Método Fênix",
+          "text": "O que acontece com o rosto *depois de emagrecer*"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "nome": "Contra o óbvio",
+      "roteiro": "Repor volume sem tratar a sustentacao pode deixar o rosto artificial. O que fazer no lugar.",
+      "ganchos": [
+        {
+          "kicker": "Cuidado",
+          "text": "Encher o rosto pode deixar *mais artificial*"
+        },
+        {
+          "kicker": "Pós-emagrecimento",
+          "text": "Volume não é o *primeiro passo*"
+        },
+        {
+          "kicker": "Harmonização",
+          "text": "Primeiro *sustentação*. Depois volume."
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "nome": "Momento certo",
+      "roteiro": "Pergunta frequente de quem emagrece com caneta: tratar o rosto agora ou esperar? Sem citar marca.",
+      "ganchos": [
+        {
+          "kicker": "Canetas emagrecedoras",
+          "text": "Tratar o rosto *agora ou esperar*?"
+        },
+        {
+          "kicker": "Pergunta frequente",
+          "text": "Emagrecendo rápido: *quando tratar o rosto*?"
+        },
+        {
+          "kicker": "Emagrecimento rápido",
+          "text": "O rosto tem *o seu tempo*"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "nome": "Método Fênix como plano",
+      "roteiro": "Os 3 sinais de que o rosto perdeu sustentacao, nao so volume. O Fenix como avaliacao em etapas.",
+      "etapas": [
+        "Avaliação",
+        "Sustentação",
+        "Contorno",
+        "Acompanhamento"
+      ],
+      "ganchos": [
+        {
+          "kicker": "Método Fênix",
+          "text": "3 sinais de que o rosto perdeu *sustentação*"
+        },
+        {
+          "kicker": "Método Fênix",
+          "text": "Avaliação *em etapas*, não procedimento solto"
+        },
+        {
+          "kicker": "Sustentação x volume",
+          "text": "Nem todo rosto caído *precisa de preenchimento*"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "nome": "Prova social",
+      "roteiro": "Paciente contando como se sentiu (com autorizacao, sem numeros nem promessa) ou close de evolucao com o aviso legal (--aviso). Fecha com 'Avaliacao em Santos'.",
+      "ganchos": [
+        {
+          "kicker": "Relato de paciente",
+          "text": "Como ela se sentiu *depois do plano*"
+        },
+        {
+          "kicker": "Bastidor",
+          "text": "Como é a *avaliação* na clínica em Santos"
+        },
+        {
+          "kicker": "Evolução real",
+          "text": "Acompanhamento *com o tempo*, sem filtro"
+        }
+      ]
+    }
+  ]
+}

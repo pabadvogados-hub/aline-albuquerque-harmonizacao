@@ -1,0 +1,60 @@
+{
+  "_leia": "Configuracao do editor de video da Dra. Aline. Cores, @ e WhatsApp vem de config/marca.json. PREENCHA o 'registro' com a profissao e o numero do conselho (ex.: 'Biomedica esteta - CRBM-1 12345'). Enquanto tiver PREENCHER, a linha de registro NAO aparece no video (e o pipeline avisa).",
+  "registro": "PREENCHER - profissao e numero do conselho (CRBM / CRO / CRM)",
+  "lower_third": {
+    "nome": "Dra. Aline Albuquerque",
+    "linha": "Harmonização Facial  ·  Santos",
+    "segundos": 4
+  },
+  "assinatura": "@dra.alinealbuquerque",
+  "aviso": "Esta imagem não representa, em hipótese alguma, garantia de resultado. Cada ser humano tem características anatômicas e fisiológicas únicas. Divulgação autorizada pela paciente.",
+  "card_final": {
+    "titulo": "Agende sua *avaliação*",
+    "subtitulo": "Harmonização Facial em Santos  ·  Método Fênix",
+    "segundos": 3
+  },
+  "gancho_segundos": 2.4,
+  "pausa_max_ms": 450,
+  "vocabulario": "Dra. Aline Albuquerque, Método Fênix, Fênix, harmonização facial, derretimento facial, sustentação, bioestimulador, preenchimento, ácido hialurônico, flacidez, contorno mandibular, emagrecimento, canetas emagrecedoras, avaliação, Santos, Gonzaga",
+  "correcoes": {
+    "(?i)\\bf[eê]nix\\b|\\bphoenix\\b|\\bfenics\\b": "Fênix",
+    "(?i)\\bharmoniza[cç][aã]o\\b": "harmonização",
+    "(?i)\\bbio ?estimulador": "bioestimulador"
+  },
+  "destaques": [
+    {
+      "procura": "derretimento",
+      "texto": "Derretimento facial"
+    },
+    {
+      "procura": "sustenta",
+      "texto": "Sustentação, não só volume"
+    },
+    {
+      "procura": "fenix",
+      "texto": "Método Fênix"
+    },
+    {
+      "procura": "emagrec",
+      "texto": "Pós-emagrecimento"
+    },
+    {
+      "procura": "bioestimulador",
+      "texto": "Bioestimulador"
+    },
+    {
+      "procura": "flacidez",
+      "texto": "Flacidez"
+    },
+    {
+      "procura": "contorno",
+      "texto": "Contorno do rosto"
+    },
+    {
+      "procura": "avalia",
+      "texto": "Avaliação em Santos"
+    }
+  ],
+  "max_destaques": 5,
+  "intervalo_min_destaques_s": 3.2
+}
