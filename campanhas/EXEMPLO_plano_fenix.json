@@ -1,0 +1,33 @@
+{
+  "_leia": "Modelo de plano. O agente copia, ajusta e roda: python trafego/painel.py criar campanhas/plano_xxx.json (tudo nasce PAUSADO). 'local_raio' = coordenadas do consultorio (negocio.json). 'cidades' = keys do comando 'cidade'. 'generos': [2] = mulheres. Videos ficam em video/saida/<slug>/ ou criativos/. Textos ja dentro das regras da Meta e do conselho (terceira pessoa, sem remedio, sem preco, sem promessa).",
+  "campanha": "[AGENTE] Fenix facial - conversas WhatsApp - teste de criativos",
+  "objetivo": "OUTCOME_ENGAGEMENT",
+  "destino": "WHATSAPP",
+  "conjuntos": [
+    {
+      "nome": "Fenix facial | Mulheres 30-60 | Baixada 15km | Advantage",
+      "orcamento_diario": 50,
+      "local_raio": {"lat": -23.9608, "lng": -46.3336, "raio_km": 15},
+      "idade_min": 30,
+      "idade_max": 60,
+      "generos": [2],
+      "publico_advantage": true,
+      "anuncios": [
+        {
+          "nome": "Reels - isso tem nome derretimento facial - g1",
+          "video": "video/saida/fenix-01/fenix-01_g1.mp4",
+          "titulo": "Avaliacao do Metodo Fenix",
+          "texto": "Quando o emagrecimento e rapido, o rosto pode perder sustentacao. Isso tem nome: derretimento facial.\n\nNo Metodo Fenix, a avaliacao comeca pela sustentacao, nao so pelo volume, para o resultado ficar natural.\n\nAgende sua avaliacao em Santos pelo WhatsApp.",
+          "descricao": "Dra. Aline Albuquerque - REGISTRO PENDENTE"
+        },
+        {
+          "nome": "Reels - encher o rosto pode deixar artificial - g1",
+          "video": "video/saida/fenix-02/fenix-02_g1.mp4",
+          "titulo": "Rosto natural depois de emagrecer",
+          "texto": "Encher o rosto depois de emagrecer pode deixar tudo mais artificial.\n\nO caminho costuma comecar pela sustentacao. E isso que a avaliacao do Metodo Fenix analisa, etapa por etapa.\n\nAvaliacao em Santos: chama no WhatsApp.",
+          "descricao": "Dra. Aline Albuquerque - REGISTRO PENDENTE"
+        }
+      ]
+    }
+  ]
+}

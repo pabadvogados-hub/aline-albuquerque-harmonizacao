@@ -1,0 +1,47 @@
+{
+  "_leia": "Identidade visual usada pelo painel e pela central de atendimento. Paleta tirada do Instagram dela (foto de perfil, destaques e Metodo Fenix): preto, nude rose, rose gold e o coral 'fogo' da fenix. Para trocar as cores, mude so aqui e gere o painel de novo.",
+  "nome": "Dra. Aline Albuquerque",
+  "nome_curto": "Aline",
+  "assinatura": "Harmonizacao Facial em Santos",
+  "metodo": "Metodo Fenix",
+  "instagram": "dra.alinealbuquerque",
+  "whatsapp": "5513988171698",
+  "monograma": "AA",
+  "fontes": {
+    "titulo": "Cormorant Garamond",
+    "texto": "Manrope"
+  },
+  "escuro": {
+    "bg": "#100c0b",
+    "bg2": "#171110",
+    "card": "#1d1614",
+    "card2": "#261d1a",
+    "linha": "#3a2c27",
+    "txt": "#f6ece6",
+    "txt2": "#cdb8ae",
+    "txt3": "#947d73",
+    "principal": "#d9a596",
+    "secundaria": "#b87a6a",
+    "fenix": "#e8603c",
+    "bom": "#86b896",
+    "ruim": "#e5776b",
+    "aviso": "#e3b35e"
+  },
+  "claro": {
+    "bg": "#f8f1ec",
+    "bg2": "#f1e5dd",
+    "card": "#fffaf7",
+    "card2": "#f6ebe4",
+    "linha": "#e6d4ca",
+    "txt": "#2a1a16",
+    "txt2": "#5f463d",
+    "txt3": "#9a8075",
+    "principal": "#a8655a",
+    "secundaria": "#8a4f44",
+    "fenix": "#c9461f",
+    "bom": "#3f8a52",
+    "ruim": "#b8473a",
+    "aviso": "#a87a1f"
+  },
+  "funil": ["Novo", "Conversando", "Qualificado", "Agendou avaliacao", "Compareceu", "Fechou", "Perdido"]
+}

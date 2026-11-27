@@ -1,0 +1,38 @@
+{
+  "_leia": "Perfil do negocio. O agente le isto antes de qualquer campanha. Campos PENDENTE precisam ser confirmados com a Aline.",
+  "nome_curto": "Aline",
+  "nome_profissional": "Dra. Aline Albuquerque",
+  "registro": "PENDENTE - profissao e numero do conselho (CRBM, CRO ou CRM). Obrigatorio no anuncio e na bio.",
+  "conselho": "PENDENTE - biomedica | dentista | medica (muda o que pode mostrar: ver docs/ESTUDO_DE_MERCADO.md secao 5)",
+  "instagram": "@dra.alinealbuquerque",
+  "whatsapp": "5513988171698",
+  "cidade_base": "Santos/SP",
+  "endereco_consultorio": "PENDENTE - endereco e bairro (vai no anuncio e define o raio)",
+  "coordenadas_consultorio": {"lat": null, "lng": null, "raio_km": 12},
+  "cidades_alvo": ["Santos", "Sao Vicente", "Guaruja", "Cubatao", "Praia Grande"],
+  "publico": {"genero": "mulheres", "idade_min": 30, "idade_max": 60,
+              "descricao": "mulheres que emagreceram rapido (dieta, bariatrica, canetas) e sentem o rosto 'cair' ou esvaziar; tambem flacidez corporal pos-emagrecimento"},
+  "oferta_de_entrada": "Avaliacao do Metodo Fenix (definir se e gratuita, paga ou com valor abatido no tratamento - so informar no atendimento)",
+  "produtos": [
+    {"nome": "Metodo Fenix facial", "prioridade": 1, "ticket_medio_reais": 3500},
+    {"nome": "Metodo Fenix corporal", "prioridade": 2, "ticket_medio_reais": 3000},
+    {"nome": "Harmonizacao facial (outros procedimentos)", "prioridade": 3, "ticket_medio_reais": 2500}
+  ],
+  "cpl_meta": 18,
+  "orcamento_mensal_total": 1800,
+  "diferenciais": [
+    "Especialista no derretimento facial do emagrecimento: nicho que quase ninguem em Santos trabalha",
+    "Criadora do Metodo Fenix: avaliacao em etapas que comeca pela sustentacao, nao so pelo volume",
+    "PENDENTE - anos de experiencia, formacao, numero de pacientes atendidas"
+  ],
+  "tom_de_voz": "acolhedor, seguro e elegante; explica como especialista, sem julgamento do corpo da paciente; nada de linguagem de promocao",
+  "nunca_dizer": [
+    "Ozempic, Mounjaro ou nome de qualquer remedio",
+    "'voce' junto com condicao do corpo ('voce emagreceu e seu rosto caiu?')",
+    "antes e depois lado a lado em anuncio",
+    "resultado garantido, 'o melhor', 'rejuvenesca X anos'",
+    "preco, pacote, promocao ou desconto no anuncio",
+    "nome ou marca de produto (toxina, acido, bioestimulador de marca X)",
+    "Metodo Fenix como tecnica nova ou exclusiva cientificamente"
+  ]
+}

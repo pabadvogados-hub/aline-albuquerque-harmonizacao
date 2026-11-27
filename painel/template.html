@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel Aline Albuquerque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#100c0b; --bg2:#171110; --card:#1d1614; --card2:#261d1a; --linha:#3a2c27;
+  --txt:#f6ece6; --txt2:#cdb8ae; --txt3:#947d73;
+  --principal:#d9a596; --secundaria:#b87a6a; --fenix:#e8603c;
+  --bom:#86b896; --ruim:#e5776b; --aviso:#e3b35e;
+  --sombra:0 1px 0 rgba(255,255,255,.03) inset, 0 12px 32px rgba(0,0,0,.28);
+  --raio:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.55 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(900px 500px at 85% -10%, color-mix(in srgb,var(--principal) 13%,transparent), transparent 60%),
+             radial-gradient(700px 420px at -10% 30%, color-mix(in srgb,var(--fenix) 7%,transparent), transparent 60%)}
+a{color:var(--principal)}
+code{background:var(--card2);padding:2px 6px;border-radius:6px;font-size:12px}
+.wrap{max-width:1360px;margin:0 auto;padding:0 24px 60px}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 75%,transparent);padding:16px 0 10px}
+.topo{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:13px;margin-right:auto;min-width:0}
+.mono{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;position:relative;
+  font-family:'Cormorant Garamond',serif;font-weight:700;font-size:20px;color:var(--principal);letter-spacing:.5px;
+  background:var(--card);border:1px solid color-mix(in srgb,var(--principal) 55%,transparent)}
+.mono::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid color-mix(in srgb,var(--fenix) 35%,transparent)}
+.marca h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:27px;margin:0;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.marca small{color:var(--txt3);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.abas{display:flex;background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:3px;max-width:100%;overflow-x:auto}
+.abas button{background:none;border:0;color:var(--txt2);font:600 12.5px Manrope;padding:8px 12px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.abas button.on{background:linear-gradient(135deg,var(--principal),var(--secundaria));color:#1a100d}
+.btn-ic{background:var(--card);border:1px solid var(--linha);color:var(--txt2);width:38px;height:38px;border-radius:11px;display:grid;place-items:center;cursor:pointer;flex:none}
+.nav{display:flex;gap:6px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:none}
+.nav a{color:var(--txt2);text-decoration:none;font-size:12.5px;font-weight:600;padding:6px 12px;border:1px solid var(--linha);border-radius:20px;white-space:nowrap;background:var(--card)}
+.nav a:hover{color:var(--principal);border-color:var(--principal)}
+.gerado{color:var(--txt3);font-size:12px;margin-top:8px}
+.demo{background:repeating-linear-gradient(135deg,var(--card2) 0 12px,var(--card) 12px 24px);border:1px dashed var(--aviso);
+  color:var(--aviso);padding:10px 14px;border-radius:12px;font-weight:600;margin:6px 0 4px;font-size:13px}
+.sec{margin-top:34px;scroll-margin-top:150px}
+.sec>h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:25px;margin:0 0 4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec>h2 svg{color:var(--principal)}
+.sec>h2 .sub{font:500 12px Manrope;color:var(--txt3);margin-left:auto}
+.sec>p.expl{color:var(--txt3);margin:0 0 14px;font-size:13px;max-width:900px}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);padding:18px;box-shadow:var(--sombra);min-width:0}
+.card h3{margin:0 0 10px;font-size:13px;font-weight:700;color:var(--txt2);letter-spacing:.02em}
+.grid{display:grid;gap:14px}
+.grid>*{min-width:0}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi .rot{color:var(--txt3);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.kpi .val{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;line-height:1.1;margin:6px 0 4px}
+.kpi.destaque{background:linear-gradient(160deg,color-mix(in srgb,var(--principal) 16%,var(--card)),var(--card) 70%);border-color:color-mix(in srgb,var(--principal) 40%,var(--linha))}
+.det{font-size:12px;color:var(--txt2)}
+.var{font-size:12px;font-weight:800}
+.var.up{color:var(--bom)} .var.down{color:var(--ruim)} .var.neu{color:var(--txt3)}
+.barra{height:6px;background:var(--card2);border-radius:4px;overflow:hidden;margin-top:8px}
+.barra i{display:block;height:100%;background:linear-gradient(90deg,var(--secundaria),var(--principal));border-radius:4px}
+.duas{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.meio{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.graf{position:relative;height:290px}
+.graf.peq{height:210px}
+.graf.alto{height:340px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--txt3);font-weight:700;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;padding:9px 10px;border-bottom:1px solid var(--linha);white-space:nowrap}
+th.ord{cursor:pointer} th.ord:hover{color:var(--principal)}
+td{padding:10px;border-bottom:1px solid var(--linha);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabela{overflow-x:auto}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--txt2)}
+.st i{width:7px;height:7px;border-radius:50%;background:var(--txt3)}
+.st.ACTIVE i{background:var(--bom)} .st.PAUSED i,.st.CAMPAIGN_PAUSED i,.st.ADSET_PAUSED i{background:var(--aviso)}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;background:var(--card2);color:var(--txt2);white-space:nowrap}
+.tag.ok{color:var(--bom);background:color-mix(in srgb,var(--bom) 14%,transparent)}
+.tag.mau{color:var(--ruim);background:color-mix(in srgb,var(--ruim) 14%,transparent)}
+.tag.mid{color:var(--aviso);background:color-mix(in srgb,var(--aviso) 14%,transparent)}
+.tag.fx{color:var(--fenix);background:color-mix(in srgb,var(--fenix) 14%,transparent)}
+.hbar{display:grid;grid-template-columns:118px 1fr 100px;gap:10px;align-items:center;margin:8px 0;font-size:12.5px}
+.hbar>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .t{height:9px;background:var(--card2);border-radius:5px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:linear-gradient(90deg,var(--secundaria),var(--principal));border-radius:5px}
+.hbar .t i.fx{background:linear-gradient(90deg,var(--principal),var(--fenix))}
+.hbar>span:last-child{text-align:right;color:var(--txt2);font-variant-numeric:tabular-nums}
+/* saude */
+.saude{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}
+.anel{position:relative;width:190px;height:190px;margin:auto}
+.anel svg{transform:rotate(-90deg)}
+.anel .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.anel .num b{font-family:'Cormorant Garamond',serif;font-size:56px;line-height:1}
+.anel .num small{display:block;color:var(--txt3);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.itens-saude{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 22px}
+/* recomendacoes */
+.recs{display:grid;gap:10px}
+.rec{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--linha);border-left:3px solid var(--txt3)}
+.rec.critico{border-left-color:var(--ruim)} .rec.atencao{border-left-color:var(--aviso)} .rec.bom{border-left-color:var(--bom)} .rec.info{border-left-color:var(--principal)}
+.rec .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--card2)}
+.rec.critico .ico{color:var(--ruim)} .rec.atencao .ico{color:var(--aviso)} .rec.bom .ico{color:var(--bom)} .rec.info .ico{color:var(--principal)}
+.rec b{display:block;font-size:14px;margin-bottom:2px}
+.rec p{margin:0;color:var(--txt2);font-size:13px}
+.rec .cmd{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copiar{background:var(--card2);border:1px solid var(--linha);color:var(--txt2);font:600 11.5px Manrope;padding:5px 10px;border-radius:8px;cursor:pointer}
+.copiar:hover{color:var(--principal);border-color:var(--principal)}
+/* funil */
+.funil{display:grid;gap:7px}
+.etapa{display:grid;grid-template-columns:170px 1fr 130px;gap:12px;align-items:center}
+.etapa .faixa{height:38px;border-radius:10px;display:flex;align-items:center;padding:0 14px;font-weight:800;font-size:15px;color:#1a100d;
+  background:linear-gradient(90deg,var(--principal),color-mix(in srgb,var(--principal) 60%,var(--fenix)));min-width:64px;font-variant-numeric:tabular-nums}
+.etapa .faixa.proj{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--principal) 35%,transparent) 0 8px,transparent 8px 16px);color:var(--txt);border:1px dashed var(--principal)}
+.etapa .nome{font-weight:600;font-size:13px}
+.etapa .nome small{display:block;color:var(--txt3);font-weight:500;font-size:11.5px}
+.etapa .taxa{text-align:right;font-size:12px;color:var(--txt2)}
+/* video campeao */
+.campeao{display:grid;grid-template-columns:300px 1fr;gap:20px}
+.tela{aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--bg2));position:relative;display:grid;place-items:center;color:var(--txt3);border:1px solid var(--linha)}
+.tela img,.tela video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tela .selo{position:absolute;top:12px;left:12px;z-index:2;background:linear-gradient(135deg,var(--principal),var(--fenix));color:#1a100d;font-weight:800;font-size:11px;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+.mets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.met{background:var(--card2);border-radius:12px;padding:12px}
+.met span{display:block;color:var(--txt3);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+.met strong{font-size:20px;font-variant-numeric:tabular-nums}
+.met em{display:block;font-style:normal;font-size:11px;margin-top:2px}
+.curvinha{display:flex;align-items:flex-end;gap:3px;height:34px}
+.curvinha i{flex:1;background:linear-gradient(var(--principal),var(--secundaria));border-radius:3px 3px 0 0;min-height:2px}
+.mini-th{width:46px;height:64px;border-radius:8px;overflow:hidden;background:var(--card2);flex:none;display:grid;place-items:center;color:var(--txt3)}
+.mini-th img{width:100%;height:100%;object-fit:cover}
+.cel-nome{display:flex;gap:10px;align-items:center;min-width:240px}
+.cel-nome b{display:block;font-size:13px;line-height:1.3}
+.cel-nome small{color:var(--txt3);font-size:11px}
+.medidor{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.medidor .t{width:60px;height:6px;background:var(--card2);border-radius:4px;overflow:hidden}
+.medidor .t i{display:block;height:100%}
+/* anuncios */
+.ads{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.ad{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.ad .img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--card2),var(--bg2));display:grid;place-items:center;color:var(--txt3);position:relative}
+.ad .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ad .corpo{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.ad b{font-size:13.5px;line-height:1.3}
+.ad small{color:var(--txt3);font-size:11.5px}
+.ad .copy{color:var(--txt2);font-size:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ad .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:auto;padding-top:8px;font-size:11px;color:var(--txt3)}
+.ad .nums strong{display:block;color:var(--txt);font-size:15px}
+.rank{position:absolute;top:10px;left:10px;z-index:2;background:linear-gradient(135deg,var(--principal),var(--fenix));color:#1a100d;font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px}
+.tipo{position:absolute;top:10px;right:10px;z-index:2;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+.rk{display:flex;gap:4px;flex-wrap:wrap}
+/* instagram */
+.perfil{display:flex;align-items:center;gap:14px}
+.perfil .foto{width:64px;height:64px;border-radius:50%;background:var(--card2);overflow:hidden;flex:none;padding:3px;background:linear-gradient(135deg,var(--fenix),var(--principal))}
+.perfil .foto div{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--card2);border:2px solid var(--card)}
+.perfil .foto img{width:100%;height:100%;object-fit:cover}
+.perfil b{font-size:16px} .perfil small{color:var(--txt3)}
+.bio{color:var(--txt2);font-size:12.5px;margin:12px 0 0;white-space:pre-line}
+.mini{grid-template-columns:repeat(4,1fr);margin-top:16px}
+.mini div{background:var(--card2);border-radius:12px;padding:10px 12px}
+.mini span{display:block;color:var(--txt3);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.mini strong{font-size:18px}
+.posts{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.post{padding:0;overflow:hidden;text-decoration:none;color:inherit}
+.post .img{aspect-ratio:4/5;background:linear-gradient(160deg,var(--card2),var(--bg2));position:relative;display:flex;align-items:flex-end;padding:12px;color:var(--txt2);font-size:12px}
+.post .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.post .fmt{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;z-index:1}
+.post .corpo{padding:10px 12px;font-size:11.5px;color:var(--txt2)}
+.post .corpo strong{color:var(--txt);font-size:15px}
+.ordbar{display:flex;gap:6px;align-items:center;margin:16px 0 10px;flex-wrap:wrap}
+.ordbar button{border:1px solid var(--linha);background:var(--card);color:var(--txt2);font:600 11.5px Manrope;padding:5px 11px;border-radius:20px;cursor:pointer}
+.ordbar button.on{color:#1a100d;background:var(--principal);border-color:var(--principal)}
+select{background:var(--card2);color:var(--txt);border:1px solid var(--linha);border-radius:9px;padding:6px 10px;font:600 12.5px Manrope;max-width:100%}
+.erro{color:var(--txt2);border:1px dashed var(--linha);border-radius:14px;padding:18px;background:var(--card)}
+.erro b{color:var(--aviso)}
+.wpp{color:var(--bom);text-decoration:none;font-weight:700}
+.glos{grid-template-columns:repeat(3,minmax(0,1fr))}
+.glos div b{color:var(--principal);display:block;margin-bottom:2px}
+.glos div{font-size:12.5px;color:var(--txt2)}
+footer{margin-top:44px;color:var(--txt3);font-size:12px;text-align:center}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.duas,.tres,.meio,.glos{grid-template-columns:1fr}
+  .campeao{grid-template-columns:1fr}.campeao .tela{max-width:300px;margin:auto;width:100%}.mets{grid-template-columns:repeat(2,1fr)}
+  .saude{grid-template-columns:1fr}.itens-saude{grid-template-columns:1fr}}
+@media (max-width:640px){.wrap{padding:0 16px 40px}.kpi .val{font-size:27px}.marca h1{font-size:21px}
+  .abas{width:100%}.mini{grid-template-columns:repeat(2,1fr)}.hbar{grid-template-columns:88px 1fr 78px}
+  .etapa{grid-template-columns:110px 1fr 84px}.rec{grid-template-columns:auto 1fr}.rec .acao{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="topo">
+      <div class="marca">
+        <div class="mono" id="mono">AA</div>
+        <div style="min-width:0"><h1 id="nome"></h1><small id="assin">Painel de marketing</small></div>
+      </div>
+      <div class="abas" id="abas"></div>
+      <button class="btn-ic" id="tema" title="Tema claro ou escuro" aria-label="Tema claro ou escuro">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+    <nav class="nav" id="nav"></nav>
+  </header>
+  <div class="gerado" id="gerado"></div>
+  <div id="app"></div>
+  <footer>Dados da Meta (Facebook e Instagram) e da central de atendimento. Conversa = pessoa que iniciou conversa pelo anuncio (WhatsApp ou Direct) ou preencheu formulario.<br>Comparativos com o mercado: docs/ESTUDO_DE_MERCADO.md. Atualize com <code>atualizar_painel.bat</code>.</footer>
+</div>
+
+<script>
+const D = /*__DADOS__*/null;
+
+const IC = {
+  alerta:'<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+  ok:'<path d="M20 6 9 17l-5-5"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>',
+  anuncio:'<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+  grafico:'<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>',
+  pessoas:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  insta:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+  lista:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  imagem:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+  play:'<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8z"/>',
+  funil:'<path d="M22 3H2l8 9.5V19l4 2v-8.5L22 3z"/>',
+  relogio:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  coracao:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>',
+  alvo:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  chat:'<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z"/>',
+  livro:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+  fogo:'<path d="M12 22c4 0 7-2.7 7-7 0-3.2-2-5.8-3.5-7.5-.4 2-1.6 3.3-3 3.8.4-3.3-1-6.5-3.5-8.3C9 6.5 5 9.5 5 15c0 4.3 3 7 7 7z"/>',
+  escudo:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+};
+const ic = (n, s=20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`;
+
+const brl = v => v==null ? '-' : v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const brl0 = v => v==null ? '-' : v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const int = v => v==null ? '-' : Math.round(v).toLocaleString('pt-BR');
+const pct = (v,d=1) => v==null ? '-' : v.toLocaleString('pt-BR',{maximumFractionDigits:d})+'%';
+const dec = (v,d=1) => v==null ? '-' : v.toLocaleString('pt-BR',{maximumFractionDigits:d,minimumFractionDigits:d});
+const esc = s => String(s??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dataBR = s => s ? s.slice(8,10)+'/'+s.slice(5,7) : '';
+const soma = (l, f) => l.reduce((s,x)=>s+(f(x)||0),0);
+const BM = () => D.benchmarks || {};
+
+function variacao(a, b, menorMelhor=false){
+  if (a==null || !b) return '<span class="var neu">sem comparativo</span>';
+  const v = (a-b)/b*100, bom = menorMelhor ? v<0 : v>0;
+  const cls = Math.abs(v)<1 ? 'neu' : (bom?'up':'down');
+  return `<span class="var ${cls}">${v>0?'+':''}${v.toFixed(0)}%</span> <span class="det">vs. periodo anterior</span>`;
+}
+// classifica um valor contra o benchmark: ok | mid | mau
+function classe(valor, chave){
+  const r = BM()[chave]; if (valor==null || !r) return '';
+  if (r.menor_melhor) return valor<=r.bom ? 'ok' : valor>=r.ruim ? 'mau' : 'mid';
+  return valor>=r.bom ? 'ok' : valor<=r.ruim ? 'mau' : 'mid';
+}
+const COR = {ok:'var(--bom)', mid:'var(--aviso)', mau:'var(--ruim)', '':'var(--txt3)'};
+const selo = (valor, chave, fmt) => { const c = classe(valor, chave); return `<span class="tag ${c}">${fmt(valor)}</span>`; };
+function medidor(valor, chave, fmt, maximo){
+  const c = classe(valor, chave);
+  return `<div class="medidor"><span>${fmt(valor)}</span><div class="t"><i style="width:${valor==null?0:Math.min(100,valor/maximo*100)}%;background:${COR[c]}"></i></div></div>`;
+}
+const erroBloco = (titulo, b) => `<div class="erro"><b>${titulo}: sem acesso.</b><br>${esc(b?.erro||'sem dados')}<br><small>Passo a passo em docs/COMO_LIBERAR_ACESSO_META.md.</small></div>`;
+
+// ---------------------------------------------------------------- tema / marca
+let periodo = '30d', graficos = [], tema = '';
+try { periodo = localStorage.getItem('aa_periodo') || '30d'; } catch(e) {}
+try { tema = localStorage.getItem('aa_tema') || ''; } catch(e) {}
+function aplicarMarca(){
+  const m = D?.marca || {}, pal = (tema==='claro' ? m.claro : m.escuro) || {};
+  const r = document.documentElement;
+  Object.entries(pal).forEach(([k,v]) => r.style.setProperty('--'+k, v));
+  r.style.setProperty('--sombra', tema==='claro' ? '0 1px 2px rgba(60,30,20,.06), 0 10px 26px rgba(60,30,20,.07)' : '0 1px 0 rgba(255,255,255,.03) inset, 0 12px 32px rgba(0,0,0,.28)');
+  document.getElementById('mono').textContent = m.monograma || 'AA';
+  document.getElementById('assin').textContent = (m.assinatura || 'Painel de marketing') + ' · Painel de marketing';
+}
+document.getElementById('tema').onclick = () => {
+  tema = tema==='claro' ? '' : 'claro';
+  try { localStorage.setItem('aa_tema', tema); } catch(e) {}
+  render();
+};
+function cores(){
+  const s = getComputedStyle(document.documentElement), g = n => s.getPropertyValue(n).trim();
+  return {p:g('--principal'), s:g('--secundaria'), f:g('--fenix'), txt3:g('--txt3'), linha:g('--linha'), bom:g('--bom'), ruim:g('--ruim'), aviso:g('--aviso'), txt:g('--txt')};
+}
+
+function abas(){
+  const el = document.getElementById('abas'); el.innerHTML = '';
+  Object.entries(D.periodos).forEach(([k,p]) => {
+    const b = document.createElement('button'); b.textContent = p.rotulo; if (k===periodo) b.className='on';
+    b.onclick = () => { periodo = k; try{localStorage.setItem('aa_periodo',k)}catch(e){}; render(); };
+    el.appendChild(b);
+  });
+}
+const SECOES = [['resumo','Resumo'],['acoes','O que fazer'],['funil','Funil'],['videos','Videos'],['anuncios','Anuncios'],
+  ['campanhas','Campanhas'],['horarios','Horarios'],['publico','Publico'],['atendimento','Atendimento'],['instagram','Instagram'],
+  ['mercado','x Mercado'],['glossario','Glossario']];
+function nav(){ document.getElementById('nav').innerHTML = SECOES.map(([id,t]) => `<a href="#${id}">${t}</a>`).join(''); }
+function secao(id, icone, titulo, sub, expl, corpo){
+  return `<section class="sec" id="${id}"><h2>${ic(icone)}${titulo}${sub?`<span class="sub">${sub}</span>`:''}</h2>${expl?`<p class="expl">${expl}</p>`:''}${corpo}</section>`;
+}
+
+// ---------------------------------------------------------------- resumo
+function kpis(P){
+  const a = P.anuncios, c = P.comercial || {}, i = P.instagram, out = [];
+  if (!a.ok) return erroBloco('Anuncios', a);
+  const t = a.total, an = a.anterior, alvo = D.metas?.cpl_alvo;
+  const orc = D.metas?.orcamento_mensal;
+  out.push(`<div class="card kpi"><div class="rot">Investido</div><div class="val">${brl(t.gasto)}</div>${variacao(t.gasto, an.gasto)}
+    ${orc && periodo==='mes' ? `<div class="barra"><i style="width:${Math.min(100,t.gasto/orc*100)}%"></i></div><div class="det">${Math.round(t.gasto/orc*100)}% do orcamento de ${brl0(orc)}</div>`:''}</div>`);
+  out.push(`<div class="card kpi"><div class="rot">Conversas pelo anuncio</div><div class="val">${int(t.leads.total)}</div>${variacao(t.leads.total, an.leads.total)}
+    <div class="det">${int(t.leads.conversas)} WhatsApp/Direct · ${int(t.leads.formularios)} formulario</div></div>`);
+  out.push(`<div class="card kpi"><div class="rot">Custo por conversa</div><div class="val">${brl(t.cpl)}</div>${variacao(t.cpl, an.cpl, true)}
+    <div class="det">${alvo?`Meta ${brl(alvo)} · `:''}Mercado ${brl0(BM().custo_conversa?.bom)} a ${brl0(BM().custo_conversa?.ruim)} ${selo(t.cpl,'custo_conversa',x=>classe(x,'custo_conversa')==='ok'?'otimo':classe(x,'custo_conversa')==='mau'?'caro':'na media')}</div></div>`);
+  const profPct = t.leads.conversas ? t.leads.conversas_profundas/t.leads.conversas*100 : null;
+  out.push(`<div class="card kpi"><div class="rot">Conversas reais</div><div class="val">${int(t.leads.conversas_profundas)}</div>
+    <div class="det">${pct(profPct,0)} mandaram 2+ mensagens · ${brl(t.custo_conversa_profunda)} cada</div>
+    <div class="barra"><i style="width:${Math.min(100,profPct||0)}%"></i></div></div>`);
+  if (c.tem_atendimento){
+    out.push(`<div class="card kpi"><div class="rot">Avaliacoes agendadas</div><div class="val">${int(c.agendados)}</div>
+      <div class="det">${pct(c.taxas?.conversa_agendamento,0)} das conversas · ${brl(c.custo_agendamento)} cada</div></div>`);
+    out.push(`<div class="card kpi"><div class="rot">Pacientes fechados</div><div class="val">${int(c.fecharam)}</div>
+      <div class="det">${brl(c.custo_paciente)} de anuncio por paciente · ticket ${brl0(c.ticket_medio)}</div></div>`);
+    out.push(`<div class="card kpi destaque"><div class="rot">Faturamento atribuido</div><div class="val">${brl0(c.faturamento)}</div>
+      <div class="det">Lucro sobre anuncio ${brl0(c.lucro_bruto)}</div></div>`);
+    out.push(`<div class="card kpi destaque"><div class="rot">Retorno (ROAS)</div><div class="val">${c.roas?dec(c.roas)+'x':'-'}</div>
+      <div class="det">cada R$ 1 investido voltou ${c.roas?brl(c.roas):'-'} ${selo(c.roas,'roas',()=>classe(c.roas,'roas')==='ok'?'excelente':classe(c.roas,'roas')==='mau'?'baixo':'bom')}</div></div>`);
+  } else {
+    const pj = c.projecao || {};
+    out.push(`<div class="card kpi"><div class="rot">Alcance</div><div class="val">${int(t.alcance)}</div>${variacao(t.alcance, an.alcance)}<div class="det">${int(t.impressoes)} impressoes · freq. ${dec(t.frequencia)}</div></div>`);
+    out.push(`<div class="card kpi"><div class="rot">CTR de link</div><div class="val">${pct(t.ctr_link,2)}</div><div class="det">${int(t.cliques)} cliques · CPM ${brl(t.cpm)}</div></div>`);
+    out.push(`<div class="card kpi destaque"><div class="rot">Projecao de pacientes</div><div class="val">${int(pj.fecharam)}</div><div class="det">pelas taxas medias do mercado (ligue a central para o numero real)</div></div>`);
+    out.push(`<div class="card kpi destaque"><div class="rot">Faturamento projetado</div><div class="val">${brl0(pj.faturamento)}</div><div class="det">ROAS projetado ${pj.roas?dec(pj.roas)+'x':'-'}</div></div>`);
+  }
+  return `<div class="grid kpis">${out.join('')}</div>`;
+}
+
+function blocoSaude(P){
+  const s = P.saude; if (!s) return '';
+  const c = s.nota>=75 ? 'var(--bom)' : s.nota>=50 ? 'var(--aviso)' : 'var(--ruim)';
+  const R = 80, C = 2*Math.PI*R;
+  const itens = s.itens.map(x => `<div class="hbar" style="grid-template-columns:160px 1fr 40px"><span>${esc(x.nome)}</span><div class="t"><i style="width:${Math.max(3,x.nota)}%;background:${x.nota>=75?'var(--bom)':x.nota>=45?'var(--aviso)':'var(--ruim)'}"></i></div><span>${x.nota}</span></div>`).join('');
+  return `<div class="card saude" style="margin-top:14px">
+    <div class="anel"><svg width="190" height="190"><circle cx="95" cy="95" r="${R}" fill="none" stroke="var(--card2)" stroke-width="14"/>
+      <circle cx="95" cy="95" r="${R}" fill="none" stroke="${c}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-s.nota/100)}"/></svg>
+      <div class="num"><div><b>${s.nota}</b><small>nota da conta</small></div></div></div>
+    <div><h3>Nota de saude da campanha</h3><p class="det" style="margin:0 0 8px">Cada ponto compara o numero dela com a faixa do mercado (100 = no nivel das melhores clinicas). A nota pesa mais o que mais pesa no caixa: custo por conversa, conversao em avaliacao e retorno.</p>
+    <div class="itens-saude">${itens}</div></div></div>`;
+}
+
+function blocoRecs(P){
+  const r = P.recomendacoes || [];
+  if (!r.length) return secao('acoes','alvo','O que fazer agora','', '', '<div class="card det">Sem acao urgente: tudo dentro do esperado.</div>');
+  const icone = {critico:'alerta', atencao:'alerta', bom:'ok', info:'info'};
+  const rot = {critico:'Urgente', atencao:'Atencao', bom:'Oportunidade', info:'Dica'};
+  return secao('acoes','alvo','O que fazer agora', `${r.filter(x=>x.nivel==='critico'||x.nivel==='atencao').length} pontos de atencao`,
+    'Lista gerada automaticamente pelas regras de otimizacao. Acoes que mexem em verba trazem o comando pronto: so rodar depois do OK da Aline.',
+    `<div class="recs">${r.map(x => `<div class="rec ${x.nivel}"><div class="ico">${ic(icone[x.nivel],17)}</div>
+      <div><b>${esc(x.titulo)}</b><p>${esc(x.texto)}</p>${x.comando?`<div class="cmd"><code>${esc(x.comando)}</code><button class="copiar" data-c="${esc(x.comando)}">Copiar comando</button></div>`:''}</div>
+      <div class="acao"><span class="tag ${x.nivel==='critico'?'mau':x.nivel==='atencao'?'mid':x.nivel==='bom'?'ok':''}">${rot[x.nivel]} · ${esc(x.area)}</span></div></div>`).join('')}</div>`);
+}
+
+// ---------------------------------------------------------------- funil
+function blocoFunil(P){
+  const a = P.anuncios, c = P.comercial || {}; if (!a.ok) return '';
+  const t = a.total, pj = c.projecao;
+  const linhas = [
+    ['Impressoes','vezes que o anuncio apareceu', t.impressoes, null],
+    ['Cliques no anuncio','foram para o WhatsApp/Direct', t.cliques, t.impressoes ? t.cliques/t.impressoes*100 : null, 'ctr_link'],
+    ['Conversas iniciadas','mandaram a 1a mensagem', t.leads.total, t.cliques ? t.leads.total/t.cliques*100 : null],
+    ['Conversas reais','2+ mensagens', t.leads.conversas_profundas, t.leads.conversas ? t.leads.conversas_profundas/t.leads.conversas*100 : null, 'conversa_profunda'],
+  ];
+  let proj = false;
+  if (c.tem_atendimento){
+    linhas.push(['Qualificadas','pelo robo ou pela equipe', c.qualificados, c.conversas ? c.qualificados/c.conversas*100 : null]);
+    linhas.push(['Avaliacao agendada','', c.agendados, c.taxas?.conversa_agendamento, 'conversa_agendamento']);
+    linhas.push(['Compareceu','', c.compareceram, c.taxas?.comparecimento, 'comparecimento']);
+    linhas.push(['Fechou tratamento', brl0(c.faturamento), c.fecharam, c.taxas?.fechamento, 'fechamento']);
+  } else if (pj){
+    proj = true;
+    linhas.push(['Avaliacao agendada','projecao pelo mercado', pj.agendados, BM().conversa_agendamento?.bom, null, true]);
+    linhas.push(['Compareceu','projecao', pj.compareceram, BM().comparecimento?.bom, null, true]);
+    linhas.push(['Fechou','projecao: '+brl0(pj.faturamento), pj.fecharam, BM().fechamento?.bom, null, true]);
+  }
+  const base = Math.log10(Math.max(t.impressoes,10));
+  const html = linhas.map(([n, s, v, tx, bm, pr]) => {
+    const w = v ? Math.max(8, Math.log10(Math.max(v,1))/base*100) : 4;
+    const cl = bm ? classe(tx, bm) : '';
+    return `<div class="etapa"><div class="nome">${n}<small>${esc(s||'')}</small></div><div><div class="faixa ${pr?'proj':''}" style="width:${w}%">${int(v)}</div></div>
+      <div class="taxa">${tx!=null?`<span class="tag ${cl}">${pct(tx)}</span>`:''}${bm&&BM()[bm]?`<br><small style="color:var(--txt3)">mercado ${BM()[bm].menor_melhor?'ate':'acima de'} ${BM()[bm].bom}%</small>`:''}</div></div>`;
+  }).join('');
+  return secao('funil','funil','Funil completo: do anuncio ao paciente', proj ? 'parte tracejada = projecao' : '',
+    'Mostra onde o paciente se perde. Anuncio bom com pouca avaliacao = gargalo no atendimento. Muita avaliacao e pouco fechamento = gargalo na consulta.',
+    `<div class="grid duas"><div class="card"><div class="funil">${html}</div></div>
+     <div class="card"><h3>Quanto custa cada etapa</h3>
+       ${[['Conversa',t.cpl],['Conversa real',t.custo_conversa_profunda],['Avaliacao agendada',c.custo_agendamento],['Paciente fechado',c.custo_paciente]].map(([n,v])=>`<div class="hbar" style="grid-template-columns:1fr auto"><span>${n}</span><span style="font-size:15px;color:var(--txt);font-weight:700">${brl(v)}</span></div>`).join('')}
+       <div class="mini grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+         <div><span>Ticket medio</span><strong>${brl0(c.ticket_medio || BM().ticket_medio)}</strong></div>
+         <div><span>Tempo 1a resposta</span><strong>${P.atendimento?.ok && P.atendimento.tempo_primeira_resposta_min!=null ? dec(P.atendimento.tempo_primeira_resposta_min)+' min':'-'}</strong></div></div>
+       <p class="det" style="margin-top:12px">Regra de saude: anuncio por paciente abaixo de ${BM().custo_paciente_max_pct_ticket||30}% do ticket.${c.custo_paciente&&c.ticket_medio?` Hoje: <b>${pct(c.custo_paciente/c.ticket_medio*100,0)}</b>.`:''}</p></div></div>`);
+}
+
+function blocoEvolucao(P){
+  const a = P.anuncios; if (!a.ok) return '';
+  return secao('evolucao','grafico','Dia a dia', `${dataBR(a.periodo.inicio)} a ${dataBR(a.periodo.fim)}`, '',
+    `<div class="grid meio"><div class="card"><h3>Investimento x conversas</h3><div class="graf"><canvas id="gDia"></canvas></div></div>
+     <div class="card"><h3>Custo por conversa por dia${D.metas?.cpl_alvo?' (linha = meta)':''}</h3><div class="graf"><canvas id="gCpl"></canvas></div></div></div>`);
+}
+
+// ---------------------------------------------------------------- videos
+function escolherCampeao(v){
+  const comLead = v.filter(x => x.leads.total >= 3 && x.cpl);
+  if (comLead.length) return [...comLead].sort((a,b) => (a.cpl - b.cpl) || (b.leads.total - a.leads.total))[0];
+  return [...v].sort((a,b) => (b.video.gancho||0) - (a.video.gancho||0))[0];
+}
+function telaVideo(x, seloTxt){
+  const capa = x.capa || x.miniatura;
+  return `<div class="tela">${seloTxt?`<span class="selo">${seloTxt}</span>`:''}
+    ${x.arquivo ? `<video src="${esc(x.arquivo)}" poster="${esc(capa||'')}" controls playsinline preload="none"></video>` :
+      capa ? `<img src="${esc(capa)}" alt="">` : `<div style="text-align:center">${ic('play',40)}<br><small>previa disponivel com o acesso real</small></div>`}</div>`;
+}
+function blocoVideos(P){
+  const a = P.anuncios; if (!a.ok) return '';
+  const v = (a.videos||[]).filter(x => x.video);
+  if (!v.length) return secao('videos','play','Videos','', '', '<div class="card det">Nenhum anuncio em video no periodo.</div>');
+  const c = escolherCampeao(v), vd = c.video;
+  const porAd = {}; (P.atendimento?.por_anuncio||[]).forEach(x => porAd[x.ad_id] = x);
+  const venda = porAd[c.id];
+  const curva = ['p25','p50','p75','p95','p100'];
+  const link = c.link_instagram || c.link_video || c.previa;
+  const hero = `<div class="card campeao">${telaVideo(c,'VIDEO CAMPEAO')}
+    <div><span class="tag fx">${ic('fogo',12)} melhor custo por conversa do periodo</span>
+      <h3 style="font-size:19px;color:var(--txt);margin:10px 0 2px;font-family:'Cormorant Garamond',serif;font-weight:600">${esc(c.nome)}</h3>
+      <div class="det" style="margin-bottom:14px">${esc(c.campanha)}${c.duracao?` · ${dec(c.duracao,0)}s`:''}${link?` · <a href="${esc(link)}" target="_blank" rel="noopener">ver anuncio</a>`:''}</div>
+      <div class="mets">
+        <div class="met"><span>Conversas</span><strong>${int(c.leads.total)}</strong><em class="det">${int(c.leads.conversas_profundas)} reais</em></div>
+        <div class="met"><span>Custo/conversa</span><strong>${brl(c.cpl)}</strong><em style="color:${COR[classe(c.cpl,'custo_conversa')]}">${a.total.cpl?dec(c.cpl/a.total.cpl*100,0)+'% da media da conta':''}</em></div>
+        <div class="met"><span>Gancho (3s)</span><strong>${pct(vd.gancho,0)}</strong><em style="color:${COR[classe(vd.gancho,'gancho')]}">mercado ${BM().gancho?.bom}%+</em></div>
+        <div class="met"><span>Retencao</span><strong>${pct(vd.retencao,0)}</strong><em style="color:${COR[classe(vd.retencao,'retencao')]}">mercado ${BM().retencao?.bom}%+</em></div>
+        <div class="met"><span>Tempo medio</span><strong>${dec(vd.tempo_medio)}s</strong><em class="det">${c.duracao?pct(vd.tempo_medio/c.duracao*100,0)+' do video':''}</em></div>
+        <div class="met"><span>Investido</span><strong>${brl0(c.gasto)}</strong><em class="det">${int(c.alcance)} pessoas</em></div>
+        <div class="met"><span>CTR de link</span><strong>${pct(c.ctr_link,2)}</strong><em style="color:${COR[classe(c.ctr_link,'ctr_link')]}">mercado ${BM().ctr_link?.bom}%+</em></div>
+        <div class="met"><span>${venda?'Pacientes':'Salvos + compart.'}</span><strong>${venda?int(venda.fecharam):int((c.engajamento?.salvos||0)+(c.engajamento?.compartilhamentos||0))}</strong><em class="det">${venda?brl0(venda.faturamento):'sinal de conteudo forte'}</em></div>
+      </div>
+      <h3 style="margin-top:16px">Curva de retencao: % de quem deu play que chegou a cada ponto</h3>
+      <div class="graf peq"><canvas id="gCurva"></canvas></div>
+      ${c.texto?`<h3 style="margin-top:12px">Texto do anuncio</h3><p class="det" style="margin:0;white-space:pre-line">${esc(c.texto)}</p>`:''}
+    </div></div>`;
+  const linhas = [...v].sort((x,y) => (x.cpl??9e9)-(y.cpl??9e9)).map((x,k) => `<tr>
+    <td><div class="cel-nome"><div class="mini-th">${(x.capa||x.miniatura)?`<img src="${esc(x.capa||x.miniatura)}" alt="" loading="lazy">`:ic('play',18)}</div><div><b>${k===0?'<span class="tag fx">#1</span> ':''}${esc(x.nome)}</b><small>${esc(x.campanha)}</small></div></div></td>
+    <td class="n">${brl0(x.gasto)}</td><td class="n">${int(x.leads.total)}</td><td class="n">${selo(x.cpl,'custo_conversa',brl)}</td>
+    <td class="n">${medidor(x.video.gancho,'gancho',v=>pct(v,0),60)}</td><td class="n">${medidor(x.video.retencao,'retencao',v=>pct(v,0),70)}</td>
+    <td class="n">${dec(x.video.tempo_medio)}s</td>
+    <td class="n"><div class="curvinha" title="25/50/75/95/100%">${curva.map(k=>`<i style="height:${x.video.curva[k]||0}%"></i>`).join('')}</div></td>
+    <td class="n">${brl(x.video.custo_thruplay)}</td>
+    <td><div class="rk">${rankTags(x.ranking)}</div></td></tr>`).join('');
+  return secao('videos','play','Videos: o que prende e o que vende', `${v.length} videos no periodo`,
+    '<b>Gancho</b> = % de quem viu o anuncio e assistiu 3 segundos (se e baixo, troque o inicio). <b>Retencao</b> = desses, quantos foram ate o fim (se e baixo, o meio esta longo). O campeao e o de menor custo por conversa com pelo menos 3 conversas.',
+    hero + `<div class="card tabela" style="margin-top:14px"><table><thead><tr><th>Video</th><th class="n">Investido</th><th class="n">Conversas</th><th class="n">Custo/conv.</th><th class="n">Gancho</th><th class="n">Retencao</th><th class="n">Tempo medio</th><th class="n">Retencao 25 a 100%</th><th class="n">Custo/ThruPlay</th><th>Qualidade (Meta)</th></tr></thead><tbody>${linhas}</tbody></table></div>`);
+}
+function rankTags(r){
+  if (!r) return '<span class="det">-</span>';
+  const nome = {quality:'Qualidade', engagement:'Engajamento', conversion:'Conversao'};
+  return Object.entries(r).map(([k,v]) => { const c = /ABOVE/.test(v)?'ok':/BELOW/.test(v)?'mau':'mid';
+    return `<span class="tag ${c}" title="${esc(v)}">${nome[k]||k}: ${/ABOVE/.test(v)?'acima':/BELOW/.test(v)?'abaixo':'media'}</span>`; }).join('');
+}
+
+function blocoFadiga(P){
+  const a = P.anuncios; if (!a.ok || !(a.fadiga||[]).length) return '';
+  return secao('fadiga','relogio','Cansaco dos anuncios','',
+    'Quando a frequencia (quantas vezes a mesma pessoa viu) sobe e o CTR cai, o anuncio cansou: hora de subir criativo novo.',
+    `<div class="card"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><span class="det">Anuncio:</span>
+      <select id="selFadiga">${a.fadiga.map((f,k)=>`<option value="${k}">${esc(f.nome)}</option>`).join('')}</select></div>
+      <div class="graf"><canvas id="gFadiga"></canvas></div></div>`);
+}
+
+// ---------------------------------------------------------------- anuncios / campanhas
+let ordemAds = 'cpl';
+function blocoAnuncios(P){
+  const a = P.anuncios; if (!a.ok || !a.anuncios.length) return '';
+  const val = {cpl:x=>x.cpl??9e9, leads:x=>-x.leads.total, gasto:x=>-x.gasto, ctr:x=>-x.ctr_link};
+  const lista = [...a.anuncios].sort((x,y) => val[ordemAds](x)-val[ordemAds](y));
+  const cards = lista.slice(0,16).map((x,k) => `<div class="card ad"><div class="img">
+      ${k<3 && x.cpl && ordemAds==='cpl'?`<span class="rank">#${k+1}</span>`:''}<span class="tipo">${esc(x.tipo||'')}</span>
+      ${(x.capa||x.miniatura)?`<img src="${esc(x.capa||x.miniatura)}" alt="" loading="lazy">`:ic(x.tipo==='Video'?'play':'imagem',32)}</div>
+    <div class="corpo"><b>${esc(x.nome)}</b><small><span class="st ${x.status}"><i></i></span> ${esc(x.conjunto||x.campanha)}</small>
+      ${x.texto?`<div class="copy">${esc(x.texto)}</div>`:''}
+      <div class="rk">${rankTags(x.ranking)}</div>
+      <div class="nums"><div>Conversas<strong>${int(x.leads.total)}</strong></div><div>Custo<strong>${brl(x.cpl)}</strong></div><div>CTR<strong>${pct(x.ctr_link,2)}</strong></div></div>
+      ${x.previa?`<a href="${esc(x.previa)}" target="_blank" rel="noopener" style="font-size:12px">ver previa do anuncio</a>`:''}</div></div>`).join('');
+  const bt = (k,t) => `<button class="${ordemAds===k?'on':''}" data-ordads="${k}">${t}</button>`;
+  return secao('anuncios','imagem','Todos os anuncios', `${a.anuncios.length} com entrega no periodo`, '',
+    `<div class="ordbar"><span class="det">Ordenar por:</span>${bt('cpl','Menor custo')}${bt('leads','Mais conversas')}${bt('gasto','Mais investido')}${bt('ctr','Maior CTR')}</div><div class="grid ads">${cards}</div>`);
+}
+
+let ordem = {campanhas:['gasto',-1], conjuntos:['gasto',-1]};
+function ordenar(lista, chave){
+  const [c, d] = ordem[chave];
+  const val = x => c==='leads' ? x.leads?.total : x[c];
+  return [...lista].sort((a,b) => { const va=val(a), vb=val(b);
+    if (va==null) return 1; if (vb==null) return -1;
+    return (typeof va==='string' ? va.localeCompare(vb) : va-vb) * d; });
+}
+function blocoCampanhas(P){
+  const a = P.anuncios; if (!a.ok) return '';
+  const th = (tab, c, rot, n) => `<th class="ord ${n?'n':''}" data-ord="${tab}|${c}">${rot}</th>`;
+  const stNome = s => s==='ACTIVE'?'Ativa':/PAUSED/.test(s)?'Pausada':esc(s);
+  const lc = ordenar(a.campanhas,'campanhas').map(c => `<tr><td><b>${esc(c.nome)}</b><br><span class="st ${c.status}"><i></i>${stNome(c.status)}</span>${c.orcamento_diario?` <small style="color:var(--txt3)">· ${brl(c.orcamento_diario)}/dia</small>`:''}</td>
+    <td class="n">${brl(c.gasto)}</td><td class="n">${int(c.leads.total)}</td><td class="n">${c.cpl==null?(c.gasto>0?'<span class="tag mau">sem conversa</span>':'-'):selo(c.cpl,'custo_conversa',brl)}</td>
+    <td class="n">${int(c.leads.conversas_profundas)}</td><td class="n">${int(c.alcance)}</td><td class="n">${pct(c.ctr_link,2)}</td><td class="n">${brl(c.cpm)}</td><td class="n">${c.frequencia?dec(c.frequencia):'-'}</td></tr>`).join('');
+  const lj = ordenar(a.conjuntos||[],'conjuntos').map(c => `<tr><td><b>${esc(c.nome)}</b><br><small style="color:var(--txt3)">${esc(c.publico.genero)} · ${esc(c.publico.idade)} · ${esc(c.publico.local)}</small></td>
+    <td><span class="tag ${c.aprendizado==='Concluido'?'ok':c.aprendizado==='Aprendendo'?'mid':'mau'}">${esc(c.aprendizado)}</span></td>
+    <td class="n">${c.orcamento_diario?brl(c.orcamento_diario):'-'}</td><td class="n">${brl(c.gasto)}</td><td class="n">${int(c.leads.total)}</td><td class="n">${selo(c.cpl,'custo_conversa',brl)}</td><td class="n">${pct(c.ctr_link,2)}</td><td class="n">${dec(c.frequencia)}</td></tr>`).join('');
+  return secao('campanhas','anuncio','Campanhas e conjuntos', `${a.campanhas.filter(c=>c.status==='ACTIVE').length} campanhas ativas · clique no titulo da coluna para ordenar`, '',
+    `<div class="card tabela"><table><thead><tr>${th('campanhas','nome','Campanha')}${th('campanhas','gasto','Investido',1)}${th('campanhas','leads','Conversas',1)}${th('campanhas','cpl','Custo/conv.',1)}<th class="n">Reais</th>${th('campanhas','alcance','Alcance',1)}${th('campanhas','ctr_link','CTR',1)}${th('campanhas','cpm','CPM',1)}${th('campanhas','frequencia','Freq.',1)}</tr></thead><tbody>${lc}</tbody></table></div>
+     ${lj?`<div class="card tabela" style="margin-top:14px"><table><thead><tr>${th('conjuntos','nome','Conjunto (publico)')}<th>Aprendizado</th>${th('conjuntos','orcamento_diario','Verba/dia',1)}${th('conjuntos','gasto','Investido',1)}${th('conjuntos','leads','Conversas',1)}${th('conjuntos','cpl','Custo/conv.',1)}${th('conjuntos','ctr_link','CTR',1)}${th('conjuntos','frequencia','Freq.',1)}</tr></thead><tbody>${lj}</tbody></table></div>`:''}`);
+}
+
+// ---------------------------------------------------------------- horarios / publico
+function blocoHorarios(P){
+  const a = P.anuncios; if (!a.ok) return '';
+  const h = a.publico.horas||[], s = a.publico.semana||[];
+  const top = [...h].filter(x=>x.leads>=2).sort((x,y)=>(x.cpl??9e9)-(y.cpl??9e9)).slice(0,3).map(x=>`${String(x.hora).padStart(2,'0')}h`).join(', ');
+  const melhorDia = [...s].filter(x=>x.leads).sort((x,y)=>(x.cpl??9e9)-(y.cpl??9e9))[0];
+  return secao('horarios','relogio','Quando as conversas chegam', top?`mais baratas: ${top}`:'',
+    'Use para escalar quem responde: conversa respondida nos primeiros 5 minutos agenda muito mais. Horario de Brasilia.',
+    `<div class="grid duas"><div class="card"><h3>Conversas e custo por hora do dia</h3><div class="graf"><canvas id="gHora"></canvas></div></div>
+     <div class="card"><h3>Por dia da semana</h3><div class="graf peq"><canvas id="gSemana"></canvas></div>
+       ${melhorDia?`<p class="det">Dia mais barato: <b>${melhorDia.dia}</b> (${brl(melhorDia.cpl)} por conversa).</p>`:''}</div></div>`);
+}
+
+function blocoPublico(P){
+  const a = P.anuncios; if (!a.ok) return '';
+  const pub = a.publico, fx = {}, gen = {female:0, male:0, unknown:0};
+  pub.idade_genero.forEach(l => { const f = fx[l.idade] = fx[l.idade]||{leads:0,gasto:0}; f.leads += l.leads; f.gasto += l.gasto; gen[l.genero] = (gen[l.genero]||0) + l.leads; });
+  const mxF = Math.max(...Object.values(fx).map(f=>f.leads),1);
+  const faixas = Object.entries(fx).sort().map(([k,f]) => `<div class="hbar"><span>${esc(k)} anos</span><div class="t"><i style="width:${f.leads/mxF*100}%"></i></div><span>${int(f.leads)} · ${f.leads?brl0(f.gasto/f.leads):'-'}</span></div>`).join('');
+  const totG = (gen.female+gen.male+gen.unknown)||1;
+  const nomePos = {feed:'Feed', story:'Stories', reels:'Reels', facebook_reels:'Reels', instagram_stories:'Stories', classic:'Rede de publico', instagram_explore:'Explorar', instagram_explore_grid_home:'Explorar', marketplace:'Marketplace', video_feeds:'Feed de video', search:'Busca', profile_feed:'Perfil'};
+  const nomePlat = {instagram:'Instagram', facebook:'Facebook', audience_network:'Audience Net.', messenger:'Messenger', threads:'Threads'};
+  const nomeAp = {iphone:'iPhone', android_smartphone:'Android', desktop:'Computador', ipad:'iPad', android_tablet:'Tablet Android', other:'Outros'};
+  const barras = (lista, rotulo, max) => lista.map(r => `<div class="hbar"><span>${esc(rotulo(r))}</span><div class="t"><i class="fx" style="width:${r.gasto/max*100}%"></i></div><span>${int(r.leads)} · ${brl0(r.cpl)}</span></div>`).join('') || '<p class="det">Sem dados</p>';
+  const mxP = Math.max(...pub.posicionamentos.map(r=>r.gasto),1), mxR = Math.max(...pub.regioes.map(r=>r.gasto),1), mxA = Math.max(...(pub.aparelhos||[]).map(r=>r.gasto),1);
+  return secao('publico','pessoas','Quem vira conversa', '', 'Numeros = conversas · custo por conversa. A barra mostra onde a verba foi.',
+    `<div class="grid tres">
+      <div class="card"><h3>Idade</h3>${faixas||'<p class="det">Sem dados</p>'}
+        <div class="mini grid" style="grid-template-columns:1fr 1fr 1fr"><div><span>Mulheres</span><strong>${Math.round(gen.female/totG*100)}%</strong></div><div><span>Homens</span><strong>${Math.round(gen.male/totG*100)}%</strong></div><div><span>Nao inf.</span><strong>${Math.round(gen.unknown/totG*100)}%</strong></div></div></div>
+      <div class="card"><h3>Onde o anuncio aparece</h3>${barras(pub.posicionamentos.slice(0,8), r=>(nomePlat[r.plataforma]||r.plataforma)+' '+(nomePos[r.posicao]||r.posicao), mxP)}</div>
+      <div class="card"><h3>Aparelho</h3>${barras(pub.aparelhos||[], r=>nomeAp[r.aparelho]||r.aparelho, mxA)}<h3 style="margin-top:16px">Estado</h3>${barras(pub.regioes.slice(0,5), r=>r.regiao, mxR)}</div></div>
+     <div class="card" style="margin-top:14px"><h3>Idade x custo por conversa</h3><div class="graf peq"><canvas id="gIdade"></canvas></div></div>`);
+}
+
+// ---------------------------------------------------------------- atendimento
+function blocoAtendimento(P){
+  const at = P.atendimento;
+  if (!at) return '';
+  if (!at.ok) return secao('atendimento','chat','Central de atendimento','', '', erroBloco('Central de atendimento', at));
+  const a = P.anuncios, nomeAd = {}; (a.anuncios||[]).forEach(x => nomeAd[x.id] = x);
+  const origNome = {anuncio:'Anuncio', comentario:'Comentario no post', dm:'Direct', story:'Story', formulario:'Formulario', whatsapp:'WhatsApp'};
+  const mxO = Math.max(...at.por_origem.map(x=>x.total),1);
+  const orig = at.por_origem.map(x => `<div class="hbar"><span>${esc(origNome[x.origem]||x.origem)}</span><div class="t"><i style="width:${x.total/mxO*100}%"></i></div><span>${int(x.total)}</span></div>`).join('');
+  const auto = at.automacoes.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n">${int(x.disparos)}</td><td class="n">${int(x.qualificados)}</td><td class="n">${x.disparos?pct(x.qualificados/x.disparos*100,0):'-'}</td></tr>`).join('');
+  const porAd = [...at.por_anuncio].sort((x,y)=>y.faturamento-x.faturamento).map(x => { const ad = nomeAd[x.ad_id]; const g = ad?.gasto;
+    return `<tr><td><b>${esc(ad?.nome || x.ad_id)}</b></td><td class="n">${int(x.conversas)}</td><td class="n">${int(x.agendados)}</td><td class="n">${int(x.fecharam)}</td><td class="n">${brl0(x.faturamento)}</td>
+      <td class="n">${g?`<span class="tag ${classe(x.faturamento/g,'roas')}">${dec(x.faturamento/g)}x</span>`:'-'}</td></tr>`; }).join('');
+  const et = at.por_etapa.map(x => `<div class="hbar"><span>${esc(x.etapa)}</span><div class="t"><i class="${x.etapa==='Fechou'?'fx':''}" style="width:${x.total/Math.max(at.por_etapa[0]?.total||1,1)*100}%"></i></div><span>${int(x.total)}</span></div>`).join('');
+  return secao('atendimento','chat','Central de atendimento (Instagram, Direct e WhatsApp)', `${int(at.contatos_novos)} contatos novos`,
+    'Tudo o que o robo e a equipe fizeram com os leads: de onde vieram, quais automacoes qualificam mais e quais anuncios realmente viram paciente.',
+    `<div class="grid tres"><div class="card"><h3>De onde vieram</h3>${orig}</div>
+      <div class="card"><h3>Etapas do funil</h3>${et}</div>
+      <div class="card"><h3>Contatos novos por dia</h3><div class="graf peq"><canvas id="gAtend"></canvas></div>
+        <p class="det">Tempo medio da 1a resposta: <b>${at.tempo_primeira_resposta_min!=null?dec(at.tempo_primeira_resposta_min)+' min':'-'}</b></p></div></div>
+     <div class="grid meio" style="margin-top:14px">
+      <div class="card tabela"><h3>Automacoes</h3><table><thead><tr><th>Automacao</th><th class="n">Disparos</th><th class="n">Qualificou</th><th class="n">Taxa</th></tr></thead><tbody>${auto||'<tr><td colspan=4 class="det">Sem automacoes ativas</td></tr>'}</tbody></table></div>
+      <div class="card tabela"><h3>Anuncio que vira paciente (retorno real)</h3><table><thead><tr><th>Anuncio</th><th class="n">Conv.</th><th class="n">Agend.</th><th class="n">Fech.</th><th class="n">Faturou</th><th class="n">ROAS</th></tr></thead><tbody>${porAd||'<tr><td colspan=6 class="det">Sem vendas ligadas a anuncio</td></tr>'}</tbody></table></div></div>`);
+}
+
+// ---------------------------------------------------------------- instagram
+let ordemPosts = 'alcance';
+function blocoInstagram(P){
+  const i = P.instagram;
+  if (!i.ok) return secao('instagram','insta','Instagram','', '', erroBloco('Instagram', i));
+  const m = i.metricas, an = i.anteriores || {};
+  const item = (rot, k) => `<div><span>${rot}</span><strong>${int(m[k])}</strong><br>${variacao(m[k], an[k])}</div>`;
+  const porFmt = {};
+  i.posts.forEach(p => { if (p.alcance!=null){ (porFmt[p.formato] = porFmt[p.formato]||[]).push(p); }});
+  const mediaFmt = Object.entries(porFmt).map(([f,v]) => [f, soma(v,x=>x.alcance)/v.length, soma(v,x=>x.taxa_engajamento)/v.length, v.length]).sort((a,b)=>b[1]-a[1]);
+  const mxF = Math.max(...mediaFmt.map(x=>x[1]),1);
+  const fmt = mediaFmt.map(([f,v,e,n]) => `<div class="hbar"><span>${esc(f)} (${n})</span><div class="t"><i style="width:${v/mxF*100}%"></i></div><span>${int(v)} · ${pct(e)}</span></div>`).join('');
+  const reels = i.posts.filter(p => p.formato==='Reels' && p.alcance);
+  const top = reels.length ? [...reels].sort((a,b)=>(b.visualizacoes||b.alcance)-(a.visualizacoes||a.alcance))[0] : null;
+  const val = {alcance:p=>p.alcance, visualizacoes:p=>p.visualizacoes, salvos:p=>p.salvos, compartilhamentos:p=>p.compartilhamentos, seguiu:p=>p.seguiu, taxa_engajamento:p=>p.taxa_engajamento, data:p=>p.data};
+  const posts = [...i.posts].sort((a,b) => { const va=val[ordemPosts](a), vb=val[ordemPosts](b); if (va==null) return 1; if (vb==null) return -1; return typeof va==='string'? vb.localeCompare(va) : vb-va; })
+    .slice(0,16).map(p => `<a class="card post" href="${esc(p.link)}" target="_blank" rel="noopener">
+      <div class="img"><span class="fmt">${esc(p.formato)}</span>${p.miniatura?`<img src="${esc(p.miniatura)}" alt="" loading="lazy">`:`<span style="position:relative">${esc(p.legenda.slice(0,90))}</span>`}</div>
+      <div class="corpo"><strong>${int(p.alcance)}</strong> alcance · ${dataBR(p.data)}<br>${p.visualizacoes!=null?`${int(p.visualizacoes)} views · `:''}${int(p.salvos)} salvos · ${int(p.compartilhamentos)} compart.<br>${p.tempo_medio!=null?`assistido ${dec(p.tempo_medio)}s em media · `:''}${p.seguiu!=null?`+${int(p.seguiu)} seguidores`:''}</div></a>`).join('');
+  const bt = (c, rot) => `<button class="${ordemPosts===c?'on':''}" data-ordposts="${c}">${rot}</button>`;
+  return secao('instagram','insta','Instagram organico', '@'+esc(i.perfil.usuario||''), '',
+    `<div class="grid duas">
+      <div class="card"><div class="perfil"><div class="foto"><div>${i.perfil.foto?`<img src="${esc(i.perfil.foto)}" alt="">`:''}</div></div>
+        <div><b>${esc(i.perfil.nome||'')}</b><br><small>${int(i.perfil.seguidores)} seguidores · ${int(i.perfil.posts)} publicacoes · segue ${int(i.perfil.seguindo)}</small></div></div>
+        ${i.perfil.bio?`<p class="bio">${esc(i.perfil.bio)}</p>`:''}
+        <div class="grid mini">${item('Alcance','reach')}${item('Visualizacoes','views')}${item('Contas engajadas','accounts_engaged')}${item('Interacoes','total_interactions')}
+          ${item('Visitas ao perfil','profile_views')}${item('Toques no link','profile_links_taps')}${item('Cliques no site','website_clicks')}${item('Novos seguidores','follows_and_unfollows')}</div>
+        ${D.pagina?.ok?`<p class="det" style="margin-top:12px">Pagina do Facebook: <b>${int(D.pagina.seguidores)}</b> seguidores</p>`:''}</div>
+      <div class="card"><h3>Seguidores novos por dia</h3><div class="graf peq"><canvas id="gSeg"></canvas></div>
+        <h3 style="margin-top:12px">Alcance medio · engajamento por formato</h3>${fmt||'<p class="det">Sem posts no periodo</p>'}</div></div>
+    ${top?`<div class="card campeao" style="margin-top:14px">${telaVideo({miniatura:top.miniatura},'REELS CAMPEAO')}
+      <div><span class="tag fx">${ic('fogo',12)} melhor reels organico do periodo</span><h3 style="font-size:18px;color:var(--txt);margin:10px 0 6px;font-family:'Cormorant Garamond',serif;font-weight:600">${esc(top.legenda)}</h3>
+      <div class="mets"><div class="met"><span>Visualizacoes</span><strong>${int(top.visualizacoes)}</strong></div><div class="met"><span>Alcance</span><strong>${int(top.alcance)}</strong></div>
+        <div class="met"><span>Tempo medio</span><strong>${top.tempo_medio!=null?dec(top.tempo_medio)+'s':'-'}</strong></div><div class="met"><span>Horas assistidas</span><strong>${top.tempo_total_h!=null?dec(top.tempo_total_h):'-'}</strong></div>
+        <div class="met"><span>Salvos</span><strong>${int(top.salvos)}</strong></div><div class="met"><span>Compartilh.</span><strong>${int(top.compartilhamentos)}</strong></div>
+        <div class="met"><span>Visitas perfil</span><strong>${int(top.visitas_perfil)}</strong></div><div class="met"><span>Seguiram</span><strong>${int(top.seguiu)}</strong></div></div>
+      <p class="det" style="margin-top:12px">Reels que vai bem no organico e candidato natural a anuncio: impulsione este primeiro ou regrave o mesmo assunto com gancho novo. ${top.link&&top.link!=='#'?`<a href="${esc(top.link)}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}</p></div></div>`:''}
+    <div class="ordbar"><span class="det">Posts do periodo (${i.posts.length}) · ordenar por:</span>${bt('alcance','Alcance')}${bt('visualizacoes','Views')}${bt('salvos','Salvos')}${bt('compartilhamentos','Compartilhamentos')}${bt('seguiu','Seguidores ganhos')}${bt('taxa_engajamento','Engajamento')}${bt('data','Data')}</div>
+    <div class="grid posts">${posts || '<p class="det">Nenhum post no periodo.</p>'}</div>`);
+}
+
+function blocoPublicoIG(){
+  const p = D.publico_instagram; if (!p) return '';
+  if (!p.ok) return secao('seguidores','pessoas','Quem segue o perfil','', '', erroBloco('Publico do Instagram', p));
+  const mx = Math.max(...p.cidades.map(x=>x.valor),1), tot = soma(p.cidades,x=>x.valor)||1;
+  const cid = p.cidades.slice(0,8).map(x => `<div class="hbar"><span>${esc(x.chave.split(',')[0])}</span><div class="t"><i style="width:${x.valor/mx*100}%"></i></div><span>${int(x.valor)}</span></div>`).join('');
+  const totI = soma(p.idade,x=>x.valor)||1, mxI = Math.max(...p.idade.map(x=>x.valor),1);
+  const ida = p.idade.map(x => `<div class="hbar"><span>${esc(x.chave)}</span><div class="t"><i style="width:${x.valor/mxI*100}%"></i></div><span>${pct(x.valor/totI*100,0)}</span></div>`).join('');
+  const totG = soma(p.genero,x=>x.valor)||1, g = k => (p.genero.find(x=>x.chave===k)?.valor||0)/totG*100;
+  const local = p.cidades.filter(x => /Santos|Vicente|Guaruj|Praia Grande|Cubat|Bertioga|Mongagu|Itanha|Peru/i.test(x.chave));
+  return secao('seguidores','pessoas','Quem segue o perfil', '', `${pct(soma(local,x=>x.valor)/tot*100,0)} dos seguidores (das cidades listadas) estao na Baixada Santista: publico que pode virar paciente.`,
+    `<div class="grid tres"><div class="card"><h3>Cidades</h3>${cid}</div>
+      <div class="card"><h3>Idade</h3>${ida}<div class="mini grid" style="grid-template-columns:1fr 1fr"><div><span>Mulheres</span><strong>${pct(g('F'),0)}</strong></div><div><span>Homens</span><strong>${pct(g('M'),0)}</strong></div></div></div>
+      <div class="card"><h3>Horario em que os seguidores estao online</h3>${p.online?.length?'<div class="graf peq"><canvas id="gOnline"></canvas></div><p class="det">Poste 30 a 60 min antes do pico.</p>':'<p class="det">A Meta nao devolveu esse dado.</p>'}</div></div>`);
+}
+
+function blocoLeads(){
+  const L = D.leads_formulario;
+  if (!L || !L.ok || !L.leads.length) return '';
+  const campo = (c, ...nomes) => { for (const n of nomes){ const k = Object.keys(c).find(x => x.toLowerCase().includes(n)); if (k) return c[k]; } return ''; };
+  const linhas = L.leads.map(l => {
+    const nome = campo(l.campos,'full_name','nome','name'), tel = campo(l.campos,'phone','telefone','whats');
+    const extra = Object.entries(l.campos).filter(([k]) => !/name|nome|phone|telefone|whats|email/i.test(k)).map(([,v])=>v).join(' · ');
+    const num = tel.replace(/\D/g,'');
+    return `<tr><td>${esc(l.data.slice(8,10)+'/'+l.data.slice(5,7)+' '+l.data.slice(11,16))}</td><td><b>${esc(nome)}</b></td>
+      <td>${num?`<a class="wpp" href="https://wa.me/${num}" target="_blank" rel="noopener">${esc(tel)}</a>`:'-'}</td><td>${esc(extra)}</td><td><small>${esc(l.anuncio||l.campanha||'')}</small></td></tr>`;}).join('');
+  return secao('formularios','lista','Leads de formulario', L.formularios.map(f => `${esc(f.nome)} (${int(f.total)})`).join(' · '), '',
+    `<div class="card tabela"><table><thead><tr><th>Quando</th><th>Nome</th><th>WhatsApp</th><th>Interesse</th><th>Anuncio</th></tr></thead><tbody>${linhas}</tbody></table></div>`);
+}
+
+// ---------------------------------------------------------------- mercado / glossario
+function blocoMercado(P){
+  const a = P.anuncios, c = P.comercial || {}; if (!a.ok) return '';
+  const t = a.total, v = t.video || {};
+  const itens = [
+    ['custo_conversa', t.cpl, brl], ['ctr_link', t.ctr_link, x=>pct(x,2)], ['cpm', t.cpm, brl], ['frequencia_max', t.frequencia, x=>dec(x)],
+    ['gancho', v.gancho, x=>pct(x,0)], ['retencao', v.retencao, x=>pct(x,0)],
+    ['conversa_profunda', t.leads.conversas ? t.leads.conversas_profundas/t.leads.conversas*100 : null, x=>pct(x,0)],
+    ['conversa_agendamento', c.taxas?.conversa_agendamento, x=>pct(x,0)], ['comparecimento', c.taxas?.comparecimento, x=>pct(x,0)],
+    ['fechamento', c.taxas?.fechamento, x=>pct(x,0)], ['roas', c.roas, x=>x==null?'-':dec(x)+'x'],
+  ];
+  const lin = itens.map(([k, val, f]) => { const r = BM()[k]; if (!r) return ''; const cl = classe(val,k);
+    return `<tr><td><b>${esc(r.rotulo)}</b><br><small style="color:var(--txt3)">${esc(r.fonte||'')}</small></td><td class="n"><b>${f(val)}</b></td>
+      <td class="n">${r.menor_melhor?'ate ':''}${f(r.bom)}${r.menor_melhor?'':'+'}</td><td class="n">${r.menor_melhor?'acima de ':'abaixo de '}${f(r.ruim)}</td>
+      <td class="n">${val==null?'<span class="det">sem dado</span>':`<span class="tag ${cl}">${cl==='ok'?'nivel das melhores':cl==='mau'?'abaixo do mercado':'na media'}</span>`}</td></tr>`; }).join('');
+  return secao('mercado','escudo','Aline x mercado', 'harmonizacao / estetica · Meta Ads · 2026',
+    'Faixas tiradas do estudo de mercado (clinicas e agencias que publicam numeros). Verde = no nivel das melhores; amarelo = na media; vermelho = pede acao.',
+    `<div class="card tabela"><table><thead><tr><th>Metrica</th><th class="n">Aline</th><th class="n">Otimo</th><th class="n">Ruim</th><th class="n">Situacao</th></tr></thead><tbody>${lin}</tbody></table></div>`);
+}
+function blocoGlossario(){
+  const g = [['Conversa','Pessoa que clicou no anuncio e mandou mensagem no WhatsApp ou Direct.'],['Conversa real','Conversa em que a pessoa mandou 2 ou mais mensagens. Separa curioso de interessado.'],
+    ['CTR de link','De cada 100 pessoas que viram o anuncio, quantas clicaram.'],['CPM','Quanto custa aparecer 1.000 vezes. Sobe quando o publico e disputado.'],
+    ['Frequencia','Quantas vezes, em media, a mesma pessoa viu o anuncio. Acima de 3,5 o anuncio cansa.'],['Gancho','% de quem viu o video e assistiu pelo menos 3 segundos. Mede o inicio.'],
+    ['Retencao','Dos que passaram dos 3 segundos, quantos assistiram ate o fim (ThruPlay). Mede o meio.'],['ThruPlay','Video assistido ate o fim ou por 15 segundos.'],
+    ['Qualidade (Meta)','Nota que a Meta da ao anuncio comparado a concorrentes do mesmo publico.'],['Aprendizado','A Meta precisa de umas 50 conversas por semana no conjunto para otimizar bem. "Limitado" = falta volume.'],
+    ['ROAS','Faturamento dividido pelo que foi investido em anuncio. 8x = cada R$ 1 voltou R$ 8.'],['Custo por paciente','Investimento em anuncio dividido pelos pacientes que fecharam.']];
+  return secao('glossario','livro','Glossario','', '', `<div class="card"><div class="grid glos">${g.map(([t,d])=>`<div><b>${t}</b>${d}</div>`).join('')}</div></div>`);
+}
+
+// ---------------------------------------------------------------- graficos
+function graficos_(P){
+  graficos.forEach(g => g.destroy()); graficos = [];
+  if (!window.Chart) return;
+  const c = cores();
+  Chart.defaults.color = c.txt3; Chart.defaults.font.family = 'Manrope'; Chart.defaults.borderColor = c.linha;
+  const leg = {position:'bottom', labels:{boxWidth:10, usePointStyle:true}};
+  const add = (id, cfg) => { const el = document.getElementById(id); if (el) graficos.push(new Chart(el, cfg)); };
+  const a = P.anuncios;
+  if (a.ok){
+    const lbl = a.diario.map(d=>dataBR(d.data));
+    add('gDia', {data:{labels:lbl, datasets:[
+      {type:'bar', label:'Investido (R$)', data:a.diario.map(d=>d.gasto), backgroundColor:c.s+'99', borderRadius:4, yAxisID:'y'},
+      {type:'line', label:'Conversas', data:a.diario.map(d=>d.leads.total), borderColor:c.p, backgroundColor:c.p, tension:.35, pointRadius:2, yAxisID:'y1'},
+      {type:'line', label:'Conversas reais', data:a.diario.map(d=>d.leads.conversas_profundas), borderColor:c.f, backgroundColor:c.f, borderDash:[4,3], tension:.35, pointRadius:0, yAxisID:'y1'}]},
+      options:{maintainAspectRatio:false, interaction:{mode:'index', intersect:false}, plugins:{legend:leg},
+        scales:{y:{beginAtZero:true, grid:{color:c.linha}, ticks:{callback:v=>'R$ '+v}}, y1:{position:'right', beginAtZero:true, grid:{display:false}}, x:{grid:{display:false}}}}});
+    const alvo = D.metas?.cpl_alvo;
+    add('gCpl', {type:'line', data:{labels:lbl, datasets:[
+      {label:'Custo por conversa', data:a.diario.map(d=>d.cpl), borderColor:c.p, backgroundColor:c.p+'22', fill:true, tension:.35, pointRadius:2, spanGaps:true},
+      ...(alvo?[{label:'Meta', data:lbl.map(()=>alvo), borderColor:c.bom, borderDash:[6,4], pointRadius:0}]:[])]},
+      options:{maintainAspectRatio:false, plugins:{legend:leg, tooltip:{callbacks:{label:x=>' '+brl(x.raw)}}}, scales:{y:{beginAtZero:true, grid:{color:c.linha}, ticks:{callback:v=>'R$ '+v}}, x:{grid:{display:false}}}}});
+    // curva de retencao: campeao x 2 seguintes x mercado
+    const v = (a.videos||[]).filter(x=>x.video);
+    if (v.length){
+      const camp = escolherCampeao(v), outros = [...v].filter(x=>x!==camp).sort((x,y)=>(x.cpl??9e9)-(y.cpl??9e9)).slice(0,2);
+      const pts = ['p25','p50','p75','p95','p100'], cs = [c.f, c.s, c.txt3];
+      add('gCurva', {type:'line', data:{labels:['25%','50%','75%','95%','100%'], datasets:[camp,...outros].map((x,k)=>({label:(k===0?'Campeao: ':'')+x.nome.slice(0,38), data:pts.map(p=>x.video.curva[p]), borderColor:cs[k], backgroundColor:cs[k], tension:.3, pointRadius:3, borderWidth:k===0?3:1.5}))},
+        options:{maintainAspectRatio:false, plugins:{legend:leg, tooltip:{callbacks:{label:x=>' '+x.raw+'%'}}}, scales:{y:{beginAtZero:true, max:100, grid:{color:c.linha}, ticks:{callback:v=>v+'%'}}, x:{grid:{display:false}}}}});
+    }
+    const sel = document.getElementById('selFadiga');
+    const desenhaFadiga = k => { const f = a.fadiga[k]; const el = document.getElementById('gFadiga'); if (!f||!el) return;
+      const old = graficos.find(g => g.canvas===el); if (old){ old.destroy(); graficos = graficos.filter(g=>g!==old); }
+      graficos.push(new Chart(el, {data:{labels:f.dias.map(d=>dataBR(d.data)), datasets:[
+        {type:'line', label:'Frequencia acumulada', data:f.dias.map(d=>d.frequencia), borderColor:c.f, backgroundColor:c.f, tension:.3, pointRadius:1, yAxisID:'y'},
+        {type:'line', label:'CTR de link (%)', data:f.dias.map(d=>d.ctr_link), borderColor:c.p, backgroundColor:c.p, tension:.3, pointRadius:1, yAxisID:'y1'},
+        {type:'bar', label:'Conversas', data:f.dias.map(d=>d.leads), backgroundColor:c.s+'66', borderRadius:3, yAxisID:'y2'}]},
+        options:{maintainAspectRatio:false, interaction:{mode:'index', intersect:false}, plugins:{legend:leg},
+          scales:{y:{beginAtZero:true, grid:{color:c.linha}, title:{display:true,text:'frequencia'}}, y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:v=>v+'%'}}, y2:{display:false, beginAtZero:true}, x:{grid:{display:false}}}}})); };
+    if (sel){ sel.onchange = () => desenhaFadiga(+sel.value); desenhaFadiga(0); }
+    const h = a.publico.horas||[];
+    add('gHora', {data:{labels:h.map(x=>String(x.hora).padStart(2,'0')+'h'), datasets:[
+      {type:'bar', label:'Conversas', data:h.map(x=>x.leads), backgroundColor:h.map(x=>x.cpl && a.total.cpl && x.cpl<=a.total.cpl*0.85 ? c.f+'cc' : c.p+'99'), borderRadius:3, yAxisID:'y'},
+      {type:'line', label:'Custo por conversa', data:h.map(x=>x.cpl), borderColor:c.txt3, pointRadius:0, tension:.35, spanGaps:true, yAxisID:'y1'}]},
+      options:{maintainAspectRatio:false, interaction:{mode:'index', intersect:false}, plugins:{legend:leg},
+        scales:{y:{beginAtZero:true, grid:{color:c.linha}}, y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:v=>'R$ '+v}}, x:{grid:{display:false}}}}});
+    const s = a.publico.semana||[];
+    add('gSemana', {data:{labels:s.map(x=>x.dia), datasets:[
+      {type:'bar', label:'Conversas', data:s.map(x=>x.leads), backgroundColor:c.p+'aa', borderRadius:4, yAxisID:'y'},
+      {type:'line', label:'Custo/conversa', data:s.map(x=>x.cpl), borderColor:c.f, pointRadius:3, tension:.3, yAxisID:'y1'}]},
+      options:{maintainAspectRatio:false, plugins:{legend:leg}, scales:{y:{beginAtZero:true, grid:{color:c.linha}}, y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:v=>'R$ '+v}}, x:{grid:{display:false}}}}});
+    const fx = {}; a.publico.idade_genero.forEach(l => { const f = fx[l.idade] = fx[l.idade]||{leads:0,gasto:0}; f.leads += l.leads; f.gasto += l.gasto; });
+    const ks = Object.keys(fx).sort();
+    add('gIdade', {data:{labels:ks, datasets:[
+      {type:'bar', label:'Conversas', data:ks.map(k=>fx[k].leads), backgroundColor:c.p+'aa', borderRadius:4, yAxisID:'y'},
+      {type:'line', label:'Custo/conversa', data:ks.map(k=>fx[k].leads?fx[k].gasto/fx[k].leads:null), borderColor:c.f, pointRadius:3, tension:.3, yAxisID:'y1'}]},
+      options:{maintainAspectRatio:false, plugins:{legend:leg}, scales:{y:{beginAtZero:true, grid:{color:c.linha}}, y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:v=>'R$ '+Math.round(v)}}, x:{grid:{display:false}}}}});
+  }
+  const at = P.atendimento;
+  if (at?.ok) add('gAtend', {type:'bar', data:{labels:at.diario.map(d=>dataBR(d.data)), datasets:[{label:'Novos', data:at.diario.map(d=>d.novos), backgroundColor:c.p+'bb', borderRadius:3}]},
+    options:{maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}}, y:{grid:{color:c.linha}, beginAtZero:true}}}});
+  const i = P.instagram;
+  if (i.ok && i.seguidores_dia.length) add('gSeg', {type:'bar', data:{labels:i.seguidores_dia.map(d=>dataBR(d.data)), datasets:[{label:'Novos seguidores', data:i.seguidores_dia.map(d=>d.novos), backgroundColor:c.p+'bb', borderRadius:3}]},
+    options:{maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}}, y:{grid:{color:c.linha}, beginAtZero:true}}}});
+  const pi = D.publico_instagram;
+  if (pi?.ok && pi.online?.length) add('gOnline', {type:'line', data:{labels:pi.online.map(x=>String(x.hora).padStart(2,'0')+'h'), datasets:[{label:'Seguidores online', data:pi.online.map(x=>x.seguidores), borderColor:c.p, backgroundColor:c.p+'33', fill:true, tension:.35, pointRadius:0}]},
+    options:{maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}, ticks:{maxTicksLimit:8}}, y:{grid:{color:c.linha}, beginAtZero:true}}}});
+}
+
+// ---------------------------------------------------------------- render
+function render(){
+  if (!D){ document.getElementById('app').innerHTML = '<div class="erro">Painel sem dados. Rode atualizar_painel.bat.</div>'; return; }
+  aplicarMarca();
+  document.getElementById('nome').textContent = D.clinica;
+  document.getElementById('gerado').textContent = 'Atualizado em ' + D.gerado_em;
+  abas(); nav();
+  const P = D.periodos[periodo] || Object.values(D.periodos)[0];
+  const y = window.scrollY;
+  document.getElementById('app').innerHTML =
+    (D.demo ? '<div class="demo">DEMONSTRACAO: numeros ficticios, dentro das faixas reais do nicho. O painel mostra os dados reais da Aline assim que a Meta liberar o acesso.</div>' : '') +
+    `<section class="sec" id="resumo" style="margin-top:14px">${kpis(P)}${blocoSaude(P)}</section>` +
+    blocoRecs(P) + blocoFunil(P) + blocoEvolucao(P) + blocoVideos(P) + blocoFadiga(P) + blocoAnuncios(P) + blocoCampanhas(P) +
+    blocoHorarios(P) + blocoPublico(P) + blocoAtendimento(P) + blocoInstagram(P) + blocoPublicoIG() + blocoLeads() + blocoMercado(P) + blocoGlossario();
+  graficos_(P);
+  window.scrollTo(0, y);
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ord],[data-ordads],[data-ordposts],.copiar'); if (!t) return;
+  if (t.dataset.ord){ const [tab, c] = t.dataset.ord.split('|'); const o = ordem[tab]; ordem[tab] = [c, o[0]===c ? -o[1] : -1]; render(); }
+  else if (t.dataset.ordads){ ordemAds = t.dataset.ordads; render(); }
+  else if (t.dataset.ordposts){ ordemPosts = t.dataset.ordposts; render(); }
+  else if (t.classList.contains('copiar')){ try { navigator.clipboard.writeText(t.dataset.c); t.textContent = 'Copiado'; } catch(err) {} }
+});
+render();
+</script>
+</body>
+</html>

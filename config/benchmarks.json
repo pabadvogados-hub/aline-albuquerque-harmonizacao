@@ -1,0 +1,16 @@
+{
+  "_leia": "Referencias de mercado (harmonizacao / estetica, Meta Ads, Brasil, 2026). O painel compara cada numero da Aline com estas faixas: 'bom' = dali para melhor e otimo; 'ruim' = dali para pior pede acao. Fontes e detalhes em docs/ESTUDO_DE_MERCADO.md.",
+  "custo_conversa": {"bom": 12, "ruim": 30, "rotulo": "Custo por conversa (R$)", "menor_melhor": true, "fonte": "Trafius 2026: R$ 8-25 em estetica"},
+  "ctr_link": {"bom": 1.6, "ruim": 0.8, "rotulo": "CTR de link (%)", "fonte": "Trafius: < 0,8% alerta; 0,95-1,6% normal"},
+  "cpm": {"bom": 20, "ruim": 40, "rotulo": "CPM (R$)", "menor_melhor": true, "fonte": "Trafius 2026: Reels R$ 8-20, feed R$ 15-35, saude R$ 30-60"},
+  "gancho": {"bom": 30, "ruim": 21, "rotulo": "Gancho: param nos 3 primeiros segundos (%)", "fonte": "Billo 2026: media saude/beleza 28%"},
+  "retencao": {"bom": 45, "ruim": 27, "rotulo": "Retencao: dos que pararam, assistem ate o fim (%)", "fonte": "Motion/Billo: media 40-50%"},
+  "frequencia_max": {"bom": 2.0, "ruim": 3.5, "rotulo": "Frequencia (vezes por pessoa)", "menor_melhor": true, "fonte": "pratica de mercado"},
+  "conversa_profunda": {"bom": 60, "ruim": 35, "rotulo": "Conversas com 2+ mensagens (%)", "fonte": "pratica de mercado"},
+  "conversa_agendamento": {"bom": 40, "ruim": 25, "rotulo": "Conversa -> avaliacao agendada (%)", "fonte": "Maganha 30-35% media; Face Doctor 35-50%"},
+  "comparecimento": {"bom": 70, "ruim": 55, "rotulo": "Agendou -> compareceu (%)", "fonte": "Maganha 60-65% media"},
+  "fechamento": {"bom": 50, "ruim": 30, "rotulo": "Compareceu -> fechou (%)", "fonte": "Maganha 35-45% media"},
+  "roas": {"bom": 8, "ruim": 3, "rotulo": "Retorno sobre o investimento (x)", "fonte": "caso Odonto Results 11,5x"},
+  "custo_paciente_max_pct_ticket": 30,
+  "ticket_medio": 3500
+}

@@ -1,0 +1,15 @@
+config/.env
+atendimento/.env
+*.env
+__pycache__/
+*.pyc
+painel/saida/
+relatorios/
+leads/
+dados/
+campanhas/*.criado.json
+video/saida/
+video/tmp/
+criativos/*
+!criativos/.gitkeep
+.claude/settings.json.fabi

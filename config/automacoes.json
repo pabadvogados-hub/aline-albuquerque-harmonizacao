@@ -1,0 +1,169 @@
+{
+  "_leia": [
+    "Automacoes da central de atendimento (estilo ManyChat) da Dra. Aline.",
+    "Gatilhos possiveis em 'gatilho.tipo': comentario | dm_palavra | story_mencao | story_resposta | primeira_mensagem | anuncio.",
+    "Palavras sao comparadas sem acento e sem maiusculas: 'fenix' pega FENIX, Fenix e Fenix com acento. Basta a palavra aparecer no texto.",
+    "'resposta_publica' (so comentario): o robo sorteia uma das variacoes para nao parecer robo.",
+    "'mensagem': o que vai no Direct. 'opcoes' viram botoes de resposta rapida. Com 'inicia_fluxo': se a mensagem tem botoes, o fluxo comeca quando a pessoa toca/responde; sem botoes, a primeira pergunta vai logo depois. Em comentario o fluxo sempre espera a resposta (a Meta so libera o Direct depois que a pessoa responde a resposta privada).",
+    "'acoes': tags, etapa do funil (o robo so avanca, nunca volta), campos e aviso para a equipe.",
+    "Variaveis nos textos: {nome}, {primeiro_nome}, {username}, {resumo}, {whatsapp_link}.",
+    "Regras da Meta que o codigo ja respeita: resposta privada 1 vez por comentario e ate 7 dias; Direct automatico so dentro de 24h da ultima mensagem da pessoa; nada de disparo em massa.",
+    "Pode editar por aqui ou pela tela Automacoes da central. A ordem importa: a primeira automacao que casar e a que dispara."
+  ],
+  "expediente": {
+    "_leia": "Fora do horario o robo continua qualificando, mas avisa uma vez (a cada 12h) que a equipe responde quando abrir. dias: 0=segunda ... 6=domingo.",
+    "dias": [0, 1, 2, 3, 4, 5],
+    "inicio": "09:00",
+    "fim": "19:00",
+    "mensagem_fora": "Ja anotei tudo por aqui. Nossa equipe responde pessoalmente assim que abrir (seg a sab, das 9h as 19h). Enquanto isso, me conta mais um pouquinho:"
+  },
+  "automacoes": [
+    {
+      "id": "comentario_fenix",
+      "nome": "Comentario FENIX",
+      "ativa": true,
+      "_leia": "Chamada dos reels/anuncios: 'comenta FENIX que eu te explico'. Responde em publico e chama no Direct.",
+      "gatilho": {"tipo": "comentario", "palavras": ["fenix", "metodo fenix"]},
+      "resposta_publica": [
+        "Te chamei no Direct, {primeiro_nome}! Da uma olhadinha",
+        "Acabei de te mandar no Direct como funciona o Metodo Fenix",
+        "Respondi no seu Direct, confere la"
+      ],
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Aqui e da equipe da Dra. Aline. Que bom que voce comentou FENIX. O Metodo Fenix e uma avaliacao em etapas para planejar a sustentacao e o contorno do rosto que mudou com o emagrecimento. Posso te fazer 4 perguntas rapidinhas para a Dra. entender o seu caso?",
+        "opcoes": ["Pode sim", "Quero saber valores"]
+      },
+      "inicia_fluxo": "qualificacao",
+      "acoes": {"tags": ["comentou_fenix"], "etapa": "Conversando"}
+    },
+    {
+      "id": "comentario_quero",
+      "nome": "Comentario QUERO / VALOR / AGENDA",
+      "ativa": true,
+      "_leia": "Pega quem comenta pedindo informacao. Valor nunca vai no comentario publico (regra do conselho e da Meta).",
+      "gatilho": {"tipo": "comentario", "palavras": ["quero", "valor", "valores", "preco", "quanto", "agenda", "agendar", "como funciona", "info"]},
+      "resposta_publica": [
+        "Te mandei tudo no Direct, {primeiro_nome}",
+        "Chamei voce no Direct para te explicar direitinho",
+        "Olha seu Direct, te respondi por la"
+      ],
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Aqui e da equipe da Dra. Aline. Os valores dependem do plano montado na avaliacao, porque cada rosto perde volume em lugares diferentes depois do emagrecimento. Posso te fazer 4 perguntas rapidas para a Dra. ja olhar o seu caso?",
+        "opcoes": ["Pode sim", "Agora nao"]
+      },
+      "inicia_fluxo": "qualificacao",
+      "acoes": {"tags": ["pediu_info_comentario"], "etapa": "Conversando"}
+    },
+    {
+      "id": "anuncio_direct",
+      "nome": "Entrou por anuncio (Direct)",
+      "ativa": true,
+      "_leia": "Anuncio com destino Direct do Instagram. Guarda o ad_id para o painel saber qual anuncio trouxe o lead.",
+      "gatilho": {"tipo": "anuncio"},
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Que bom te ver por aqui. Sou da equipe da Dra. Aline, especialista em harmonizacao para quem emagreceu. Vou te fazer 4 perguntas rapidas para a Dra. entender o seu caso, combinado?",
+        "opcoes": ["Combinado"]
+      },
+      "inicia_fluxo": "qualificacao",
+      "acoes": {"tags": ["veio_anuncio"], "etapa": "Conversando"}
+    },
+    {
+      "id": "dm_palavra",
+      "nome": "Direct com palavra-chave",
+      "ativa": true,
+      "gatilho": {"tipo": "dm_palavra", "palavras": ["fenix", "valor", "valores", "preco", "quanto custa", "agenda", "agendar", "avaliacao", "harmonizacao", "derretimento", "flacidez"]},
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Aqui e da equipe da Dra. Aline. Para te passar a melhor orientacao, posso te fazer 4 perguntas rapidinhas?",
+        "opcoes": ["Pode sim"]
+      },
+      "inicia_fluxo": "qualificacao",
+      "acoes": {"tags": ["dm_palavra_chave"], "etapa": "Conversando"}
+    },
+    {
+      "id": "story_mencao",
+      "nome": "Mencao em story",
+      "ativa": true,
+      "_leia": "Cliente marcou a Dra. no story: agradece e marca como embaixadora (bom para pedir depoimento).",
+      "gatilho": {"tipo": "story_mencao"},
+      "mensagem": {
+        "texto": "Que alegria ver voce marcando a gente, {primeiro_nome}! Obrigada pelo carinho. Se quiser contar como foi sua experiencia, a Dra. Aline vai amar ler."
+      },
+      "acoes": {"tags": ["mencionou_story", "embaixadora"], "notificar": true}
+    },
+    {
+      "id": "story_resposta",
+      "nome": "Resposta a story",
+      "ativa": true,
+      "gatilho": {"tipo": "story_resposta"},
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Vi que voce respondeu o story. Quer que eu te explique como funciona a avaliacao com a Dra. Aline?",
+        "opcoes": ["Quero sim", "So estava comentando"]
+      },
+      "inicia_fluxo": "qualificacao",
+      "acoes": {"tags": ["respondeu_story"], "etapa": "Conversando"}
+    },
+    {
+      "id": "boas_vindas",
+      "nome": "Primeira mensagem (boas-vindas)",
+      "ativa": true,
+      "_leia": "Qualquer primeira mensagem que nao caiu em outra automacao. Nao inicia fluxo sozinho: oferece os caminhos.",
+      "gatilho": {"tipo": "primeira_mensagem"},
+      "mensagem": {
+        "texto": "Oi, {primeiro_nome}! Seja bem-vinda. Aqui e da equipe da Dra. Aline, harmonizacao facial em Santos. Como posso te ajudar?",
+        "opcoes": ["Quero uma avaliacao", "Metodo Fenix", "Ja sou paciente"]
+      },
+      "acoes": {"tags": ["boas_vindas"]}
+    }
+  ],
+  "opcoes_globais": {
+    "_leia": "Botoes que podem aparecer em qualquer mensagem e o que cada um faz.",
+    "Quero uma avaliacao": {"inicia_fluxo": "qualificacao"},
+    "Metodo Fenix": {"inicia_fluxo": "qualificacao", "tags": ["interesse_fenix"]},
+    "Pode sim": {"inicia_fluxo": "qualificacao"},
+    "Quero sim": {"inicia_fluxo": "qualificacao"},
+    "Combinado": {"inicia_fluxo": "qualificacao"},
+    "Quero saber valores": {"inicia_fluxo": "qualificacao", "tags": ["perguntou_valor"]},
+    "Ja sou paciente": {"tags": ["paciente"], "texto": "Que bom te ver de novo! A equipe ja vai te responder por aqui.", "notificar": true},
+    "Agora nao": {"tags": ["frio"], "texto": "Sem problema! Quando quiser, e so mandar FENIX aqui que eu te explico tudo."},
+    "So estava comentando": {"texto": "Obrigada pelo carinho! Qualquer duvida, estou por aqui."}
+  },
+  "fluxos": {
+    "qualificacao": {
+      "nome": "Qualificacao Metodo Fenix",
+      "_leia": "4 perguntas. Cada resposta vira campo do contato e tag. No fim manda o link do WhatsApp com o resumo e move para Qualificado.",
+      "passos": [
+        {
+          "campo": "incomodo",
+          "pergunta": "1/4 - O que mais te incomoda hoje no seu rosto?",
+          "opcoes": ["Flacidez pos emagrecer", "Bigode chines", "Olheiras", "Contorno do rosto", "Outro"],
+          "tag_prefixo": "incomodo_"
+        },
+        {
+          "campo": "emagrecimento",
+          "pergunta": "2/4 - Voce emagreceu recentemente? Quanto, mais ou menos, e em quanto tempo?",
+          "opcoes": ["Ate 10 kg", "10 a 20 kg", "Mais de 20 kg", "Nao emagreci"],
+          "aceita_texto": true,
+          "tag_prefixo": "emagreceu_"
+        },
+        {
+          "campo": "ja_fez_harmonizacao",
+          "pergunta": "3/4 - Ja fez algum procedimento de harmonizacao antes?",
+          "opcoes": ["Nunca fiz", "Ja fiz"]
+        },
+        {
+          "campo": "periodo",
+          "pergunta": "4/4 - Qual o melhor periodo para a sua avaliacao?",
+          "opcoes": ["Manha", "Tarde", "Noite", "Sabado"]
+        }
+      ],
+      "final": {
+        "texto": "Perfeito, {primeiro_nome}! Ja passei tudo para a Dra. Aline. Toca no botao abaixo para falar com a gente no WhatsApp e escolher o melhor horario da sua avaliacao.",
+        "botao": "Agendar no WhatsApp",
+        "whatsapp_texto": "Ola! Vim pelo Instagram e quero agendar minha avaliacao. {resumo}",
+        "etapa": "Qualificado",
+        "tags": ["qualificado"],
+        "notificar": true
+      }
+    }
+  }
+}

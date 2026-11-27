@@ -1,0 +1,19 @@
+# Exemplo de servico systemd (NAO foi instalado em lugar nenhum).
+# Copiar para /etc/systemd/system/aline-atendimento.service, ajustar caminhos e:
+#   systemctl daemon-reload && systemctl enable --now aline-atendimento
+[Unit]
+Description=Central de atendimento Instagram - Dra. Aline Albuquerque
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/aline/atendimento
+# as variaveis ficam em /opt/aline/atendimento/.env ou /opt/aline/config/.env (lidas pelo proprio app)
+ExecStart=/opt/aline/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8077 --workers 1
+# 1 worker: a fila de eventos e o SQLite sao de um processo so
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

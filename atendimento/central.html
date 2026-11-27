@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de Atendimento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#100c0b;--bg2:#171110;--card:#1d1614;--card2:#261d1a;--linha:#3a2c27;--txt:#f6ece6;--txt2:#cdb8ae;--txt3:#947d73;
+  --principal:#d9a596;--secundaria:#b87a6a;--fenix:#e8603c;--bom:#86b896;--ruim:#e5776b;--aviso:#e3b35e;
+  --ft:'Cormorant Garamond',serif;--fx:Manrope,system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--txt);font:14px/1.45 var(--fx);-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--principal)}
+.oculto{display:none!important}
+/* topo */
+header{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--linha);background:var(--bg2);position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.mono{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--principal);color:var(--principal);font:700 16px var(--ft);flex:none}
+.marca h1{font:600 21px var(--ft);margin:0;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.marca small{color:var(--txt3);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+nav{display:flex;background:var(--card);border:1px solid var(--linha);border-radius:10px;padding:3px;max-width:100%;overflow-x:auto}
+nav button{background:none;border:0;color:var(--txt2);font-weight:600;font-size:13px;padding:7px 13px;border-radius:7px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--principal);color:#1b1210}
+.ic{background:var(--card);border:1px solid var(--linha);color:var(--txt2);width:36px;height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;flex:none}
+.sim{background:repeating-linear-gradient(135deg,var(--card2) 0 10px,var(--card) 10px 20px);color:var(--aviso);border-bottom:1px dashed var(--aviso);font-size:12px;font-weight:600;padding:6px 18px}
+header,.sim{flex:none}
+main{flex:1;min-height:0}
+/* comum */
+.card{background:var(--card);border:1px solid var(--linha);border-radius:14px}
+.etq{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;background:var(--card2);color:var(--txt2);white-space:nowrap}
+.etq.e0{color:var(--txt2)} .etq.e1{color:var(--principal)} .etq.e2{color:var(--aviso)} .etq.e3{color:var(--fenix)} .etq.e4{color:var(--secundaria)} .etq.e5{color:var(--bom)} .etq.e6{color:var(--ruim)}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;background:var(--card2);color:var(--txt2);margin:2px 3px 2px 0}
+.tag button{background:none;border:0;color:var(--txt3);cursor:pointer;padding:0;font-size:13px;line-height:1}
+.btn{background:var(--principal);color:#1b1210;border:0;border-radius:9px;padding:8px 14px;font-weight:700;cursor:pointer}
+.btn.sec{background:var(--card2);color:var(--txt);border:1px solid var(--linha)}
+.btn:disabled{opacity:.5;cursor:default}
+input.campo,select.campo,textarea.campo{width:100%;background:var(--bg2);border:1px solid var(--linha);border-radius:9px;padding:8px 10px;outline:none}
+input.campo:focus,textarea.campo:focus,select.campo:focus{border-color:var(--principal)}
+.av{width:38px;height:38px;border-radius:50%;background:var(--card2);flex:none;overflow:hidden;display:grid;place-items:center;color:var(--principal);font-weight:700;font-size:13px;border:1px solid var(--linha)}
+.av img{width:100%;height:100%;object-fit:cover}
+.rot{color:var(--txt3);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.vazio{color:var(--txt3);padding:30px;text-align:center}
+/* caixa */
+.caixa{display:grid;grid-template-columns:330px minmax(0,1fr) 300px;height:100%}
+.lista{border-right:1px solid var(--linha);display:flex;flex-direction:column;min-height:0}
+.filtros{padding:12px;display:grid;gap:8px;border-bottom:1px solid var(--linha)}
+.itens{overflow-y:auto;flex:1}
+.item{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid var(--linha);cursor:pointer}
+.item:hover{background:var(--card)} .item.on{background:var(--card2)}
+.item .meio{min-width:0;flex:1}
+.item .l1{display:flex;justify-content:space-between;gap:6px}
+.item b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item time{color:var(--txt3);font-size:11px;flex:none}
+.item p{margin:2px 0 4px;color:var(--txt2);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conversa{display:flex;flex-direction:column;min-height:0;min-width:0}
+.conv-topo{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--linha)}
+.conv-topo .voltar{display:none}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:8px 12px;border-radius:14px;white-space:pre-wrap;word-wrap:break-word;font-size:13.5px}
+.msg.entrada{background:var(--card2);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.saida{background:color-mix(in srgb,var(--principal) 22%,var(--card));align-self:flex-end;border-bottom-right-radius:4px}
+.msg.publica{background:transparent;border:1px dashed var(--linha)}
+.msg small{display:block;color:var(--txt3);font-size:10.5px;margin-top:3px}
+.aviso-janela{margin:0 14px 8px;padding:8px 12px;border-radius:10px;font-size:12.5px;border:1px solid var(--linha);background:var(--card)}
+.aviso-janela.ruim{border-color:var(--ruim);color:var(--ruim)} .aviso-janela.medio{border-color:var(--aviso);color:var(--aviso)}
+.compor{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--linha);align-items:flex-end}
+.compor textarea{resize:none;height:42px;max-height:140px}
+.detalhe{border-left:1px solid var(--linha);overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px}
+.detalhe h3{font:600 18px var(--ft);margin:0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12.5px}
+.kv span{color:var(--txt3)}
+.linha-hist{font-size:12px;color:var(--txt2);display:flex;justify-content:space-between;border-bottom:1px dashed var(--linha);padding:4px 0}
+/* funil */
+.kanban{display:flex;gap:12px;overflow-x:auto;height:100%;padding:16px;align-items:flex-start}
+.coluna{background:var(--bg2);border:1px solid var(--linha);border-radius:14px;min-width:250px;width:250px;max-height:100%;display:flex;flex-direction:column}
+.coluna.alvo{border-color:var(--principal)}
+.coluna h4{margin:0;padding:12px 12px 8px;display:flex;justify-content:space-between;font-size:13px}
+.coluna .cards{overflow-y:auto;padding:0 10px 10px;display:grid;gap:8px;min-height:60px}
+.kc{background:var(--card);border:1px solid var(--linha);border-radius:11px;padding:10px;cursor:grab}
+.kc .t{display:flex;gap:8px;align-items:center}
+.kc b{font-size:13px}
+.kc select{margin-top:8px;font-size:12px;padding:4px 6px}
+/* automacoes e numeros */
+.pagina{padding:18px;overflow-y:auto;height:100%}
+.grade{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.aut{padding:16px;display:flex;flex-direction:column;gap:10px}
+.aut .cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.aut h3{margin:0;font:600 18px var(--ft)}
+.chave{position:relative;width:42px;height:24px;flex:none}
+.chave input{opacity:0;width:0;height:0}
+.chave i{position:absolute;inset:0;background:var(--card2);border:1px solid var(--linha);border-radius:20px;cursor:pointer;transition:.2s}
+.chave i:before{content:'';position:absolute;width:18px;height:18px;left:2px;top:2px;background:var(--txt3);border-radius:50%;transition:.2s}
+.chave input:checked+i{background:color-mix(in srgb,var(--bom) 35%,var(--card2))}
+.chave input:checked+i:before{transform:translateX(18px);background:var(--bom)}
+.cont{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cont div{background:var(--card2);border-radius:10px;padding:8px 10px}
+.cont strong{display:block;font:700 22px var(--ft)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.kpi{padding:14px}
+.kpi .v{font:700 30px var(--ft);line-height:1.1;margin-top:4px}
+.kpi .d{font-size:12px;color:var(--txt2)}
+.hbar{display:grid;grid-template-columns:130px 1fr 70px;gap:10px;align-items:center;margin:7px 0;font-size:12.5px}
+.hbar .t{height:8px;background:var(--card2);border-radius:4px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:linear-gradient(90deg,var(--secundaria),var(--principal));border-radius:4px}
+.hbar span:last-child{text-align:right;color:var(--txt2)}
+.colunas{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.barras{display:flex;align-items:flex-end;gap:3px;height:140px;margin-top:10px}
+.barras i{flex:1;background:var(--principal);border-radius:3px 3px 0 0;min-height:2px;opacity:.85}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--txt3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--linha)}
+td{padding:8px;border-bottom:1px solid var(--linha)}
+td.n,th.n{text-align:right}
+/* login e modal */
+.tela{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:50;padding:16px}
+.tela .card{padding:28px;width:100%;max-width:360px;display:grid;gap:14px;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:center;z-index:40;padding:16px}
+.modal .card{padding:20px;width:100%;max-width:380px;display:grid;gap:12px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--linha);padding:10px 16px;border-radius:10px;z-index:60;font-size:13px;max-width:90vw}
+@media (max-width:1100px){.caixa{grid-template-columns:300px minmax(0,1fr)}.detalhe{display:none}.caixa.ver-detalhe .detalhe{display:flex;position:fixed;top:var(--topo,63px);right:0;bottom:0;width:min(340px,100vw);background:var(--bg);z-index:20}}
+@media (max-width:720px){header{padding:10px 12px}.marca small{display:none}nav{order:3;width:100%}
+  .caixa{grid-template-columns:1fr}.caixa .conversa{display:none}.caixa.aberta .lista{display:none}.caixa.aberta .conversa{display:flex}
+  .conv-topo .voltar{display:grid}.caixa.ver-detalhe .detalhe{left:0;width:100vw}
+  .hbar{grid-template-columns:96px 1fr 56px}.pagina{padding:14px}.grade{grid-template-columns:1fr}.msg{max-width:88%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="marca"><div class="mono" id="mono"></div><div style="min-width:0"><h1 id="nome"></h1><small>Central de atendimento</small></div></div>
+  <nav id="nav">
+    <button data-v="caixa" class="on">Caixa de entrada</button><button data-v="funil">Funil</button>
+    <button data-v="automacoes">Automacoes</button><button data-v="numeros">Numeros</button>
+  </nav>
+  <button class="ic" id="tema" title="Tema claro ou escuro"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  <button class="ic" id="sair" title="Sair"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
+</header>
+<main id="app"></main>
+
+<div class="tela oculto" id="login"><div class="card">
+  <div class="mono" style="margin:0 auto" id="mono2"></div>
+  <div><div style="font:600 24px var(--ft)" id="nome2"></div><div class="rot">Central de atendimento</div></div>
+  <input class="campo" type="password" id="senha" placeholder="Senha" autocomplete="current-password">
+  <button class="btn" id="entrar">Entrar</button><div id="erroLogin" style="color:var(--ruim);font-size:13px"></div>
+</div></div>
+
+<script>
+const M = /*__MARCA__*/null || {nome:'Clinica', funil:['Novo'], escuro:{}, claro:{}};
+const F = M.funil || [];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl = v => v==null ? '-' : Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const int = v => v==null ? '-' : Math.round(v).toLocaleString('pt-BR');
+const ORIGEM = {comentario:'Comentario', dm:'Direct', story:'Story', anuncio:'Anuncio', formulario:'Formulario'};
+const GATILHO = {comentario:'Palavra em comentario', dm_palavra:'Palavra no Direct', story_mencao:'Mencao em story', story_resposta:'Resposta a story', primeira_mensagem:'Primeira mensagem', anuncio:'Entrada por anuncio'};
+
+let tema = 'escuro';
+try { tema = localStorage.getItem('atend_tema') || 'escuro'; } catch(e) {}
+function aplicarTema(){
+  const p = M[tema] || {}, r = document.documentElement.style;
+  Object.entries(p).forEach(([k,v]) => r.setProperty('--'+k, v));
+  if (M.fontes?.titulo) r.setProperty('--ft', `'${M.fontes.titulo}',serif`);
+  if (M.fontes?.texto) r.setProperty('--fx', `'${M.fontes.texto}',system-ui,sans-serif`);
+}
+aplicarTema();
+$('#tema').onclick = () => { tema = tema==='escuro'?'claro':'escuro'; try{localStorage.setItem('atend_tema',tema)}catch(e){}; aplicarTema(); };
+['#nome','#nome2'].forEach(s => $(s).textContent = M.nome || '');
+['#mono','#mono2'].forEach(s => $(s).textContent = M.monograma || 'AA');
+document.title = 'Atendimento - ' + (M.nome || '');
+
+function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),3500); }
+async function api(url, opt={}){
+  const r = await fetch(url, {headers:{'Content-Type':'application/json'}, credentials:'same-origin', ...opt,
+    body: opt.body && typeof opt.body!=='string' ? JSON.stringify(opt.body) : opt.body});
+  if (r.status===401 && url!=='/api/login'){ $('#login').classList.remove('oculto'); throw new Error('login'); }
+  return r.json();
+}
+$('#entrar').onclick = async () => {
+  const d = await api('/api/login',{method:'POST', body:{senha:$('#senha').value}});
+  if (d.ok){ $('#login').classList.add('oculto'); $('#senha').value=''; abrir(vista); } else $('#erroLogin').textContent = d.erro||'Erro';
+};
+$('#senha').onkeydown = e => { if (e.key==='Enter') $('#entrar').click(); };
+$('#sair').onclick = async () => { await api('/api/sair',{method:'POST'}); location.reload(); };
+
+const ix = e => Math.max(0, F.indexOf(e));
+const etq = e => `<span class="etq e${ix(e)}">${esc(e)}</span>`;
+const av = c => `<div class="av">${c.foto?`<img src="${esc(c.foto)}" alt="" loading="lazy">`:esc((c.username||c.nome||'?').slice(0,2).toUpperCase())}</div>`;
+const nomeC = c => c.username ? '@'+c.username : (c.nome || 'Contato '+c.id);
+function tempo(s){
+  if (!s) return '';
+  const d = (Date.now() - new Date(s.replace(' ','T')).getTime())/60000;
+  if (d < 1) return 'agora'; if (d < 60) return Math.round(d)+' min'; if (d < 1440) return Math.round(d/60)+' h';
+  return Math.round(d/1440)+' d';
+}
+const dataBR = s => s ? s.slice(8,10)+'/'+s.slice(5,7)+' '+s.slice(11,16) : '';
+
+let vista = 'caixa', timer = null;
+document.querySelectorAll('#nav button').forEach(b => b.onclick = () => abrir(b.dataset.v));
+function abrir(v){
+  vista = v; clearInterval(timer);
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.v===v));
+  ({caixa:telaCaixa, funil:telaFunil, automacoes:telaAutomacoes, numeros:telaNumeros})[v]().catch(e => { if (e.message!=='login') console.error(e); });
+}
+
+/* ============ CAIXA DE ENTRADA ============ */
+let contatos = [], atual = null, respostas = [];
+async function telaCaixa(){
+  $('#app').innerHTML = `<div class="caixa" id="cx">
+    <div class="lista"><div class="filtros">
+      <input class="campo" id="busca" placeholder="Buscar por @, nome, tag ou resposta">
+      <select class="campo" id="fEtapa"><option value="">Todas as etapas</option>${F.map(e=>`<option>${esc(e)}</option>`).join('')}</select>
+    </div><div class="itens" id="itens"></div></div>
+    <div class="conversa" id="conv"><div class="vazio">Escolha uma conversa</div></div>
+    <div class="detalhe" id="det"></div></div>`;
+  let t; $('#busca').oninput = () => { clearTimeout(t); t = setTimeout(carregarLista, 300); };
+  $('#fEtapa').onchange = carregarLista;
+  respostas = (await api('/api/respostas-rapidas')).respostas || [];
+  await carregarLista();
+  if (atual) abrirConversa(atual, true);
+  timer = setInterval(() => { carregarLista(); if (atual) abrirConversa(atual, true); }, 10000);
+}
+async function carregarLista(){
+  const q = new URLSearchParams({busca:$('#busca')?.value||'', etapa:$('#fEtapa')?.value||''});
+  const d = await api('/api/conversas?'+q); contatos = d.contatos || [];
+  const el = $('#itens'); if (!el) return;
+  el.innerHTML = contatos.length ? contatos.map(c => `<div class="item ${c.id===atual?'on':''}" data-id="${c.id}">${av(c)}
+    <div class="meio"><div class="l1"><b>${esc(nomeC(c))}</b><time>${tempo(c.ultima_msg_em||c.criado_em)}</time></div>
+    <p>${c.ultima_dir==='saida'?'Voce: ':''}${esc(c.ultima_msg||'')}</p>
+    <div>${etq(c.etapa)} <span class="etq">${esc(ORIGEM[c.origem]||c.origem||'')}</span>${c.robo_pausado?' <span class="etq" style="color:var(--aviso)">humano</span>':''}
+    ${c.janela_horas>0&&c.janela_horas<4?` <span class="etq" style="color:var(--ruim)">janela ${c.janela_horas}h</span>`:''}</div></div></div>`).join('')
+    : '<div class="vazio">Nenhuma conversa ainda.</div>';
+  el.querySelectorAll('.item').forEach(i => i.onclick = () => abrirConversa(+i.dataset.id));
+}
+async function abrirConversa(id, silencioso=false){
+  const d = await api('/api/contato/'+id); const c = d.contato; atual = id;
+  document.querySelectorAll('.item').forEach(i => i.classList.toggle('on', +i.dataset.id===id));
+  $('#cx')?.classList.add('aberta');
+  const conv = $('#conv'); if (!conv) return;
+  const rolarFim = !silencioso || (conv.querySelector('.msgs') && (conv.querySelector('.msgs').scrollHeight - conv.querySelector('.msgs').scrollTop - conv.querySelector('.msgs').clientHeight < 60));
+  const rascunho = $('#texto')?.value || '';
+  const jan = c.janela_horas;
+  const aviso = jan==null ? `<div class="aviso-janela medio">Esta pessoa so comentou. O Direct libera quando ela responder a mensagem privada.</div>`
+    : jan===0 ? `<div class="aviso-janela ruim">Janela de 24h fechada. Ate 7 dias depois da ultima mensagem dela, a resposta sai como atendimento humano. Depois disso a Meta bloqueia.</div>`
+    : jan<6 ? `<div class="aviso-janela medio">A janela de 24h fecha em ${jan}h.</div>` : '';
+  const autor = m => m.direcao==='entrada' ? '' : (m.autor==='robo' ? 'Robo'+(m.automacao?` - ${m.automacao}`:'') : m.autor==='app_instagram' ? 'Pelo app do Instagram' : 'Equipe');
+  conv.innerHTML = `<div class="conv-topo"><button class="ic voltar" id="voltar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      ${av(c)}<div style="min-width:0;flex:1"><b>${esc(nomeC(c))}</b><br><small style="color:var(--txt3)">${esc(c.nome||'')} ${etq(c.etapa)}</small></div>
+      <button class="btn sec" id="verDet">Contato</button></div>
+    <div class="msgs" id="msgs">${d.mensagens.map(m => `<div class="msg ${m.direcao} ${m.tipo==='resposta_publica'||m.tipo==='comentario'?'publica':''}">${m.tipo==='comentario'?'<b>Comentou:</b> ':m.tipo==='resposta_publica'?'<b>Resposta publica:</b> ':m.tipo==='private_reply'?'<b>Resposta privada:</b> ':''}${esc(m.texto)}<small>${dataBR(m.quando)} ${esc(autor(m))}</small></div>`).join('') || '<div class="vazio">Sem mensagens</div>'}</div>
+    ${aviso}
+    <div class="compor"><select class="campo" id="rr" style="width:130px"><option value="">Respostas</option>${respostas.map(r=>`<option value="${r.id}">${esc(r.titulo)}</option>`).join('')}</select>
+      <textarea class="campo" id="texto" placeholder="Escreva a resposta"></textarea><button class="btn" id="enviar">Enviar</button></div>`;
+  $('#texto').value = rascunho;
+  const ms = $('#msgs'); if (rolarFim) ms.scrollTop = ms.scrollHeight;
+  $('#voltar').onclick = () => { $('#cx').classList.remove('aberta','ver-detalhe'); atual = null; };
+  $('#verDet').onclick = () => $('#cx').classList.toggle('ver-detalhe');
+  $('#rr').onchange = e => { const r = respostas.find(x => x.id==e.target.value); if (r) $('#texto').value = r.texto; e.target.value=''; };
+  $('#texto').onkeydown = e => { if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); $('#enviar').click(); } };
+  $('#enviar').onclick = async () => {
+    const texto = $('#texto').value.trim(); if (!texto) return;
+    $('#enviar').disabled = true;
+    const r = await api(`/api/contato/${id}/enviar`, {method:'POST', body:{texto}});
+    $('#enviar').disabled = false;
+    if (r.ok){ $('#texto').value=''; if (r.tag) toast('Enviado como atendimento humano (fora das 24h).'); abrirConversa(id); carregarLista(); }
+    else toast(r.erro || 'Nao enviado');
+  };
+  detalhe(d);
+}
+function detalhe(d){
+  const c = d.contato, el = $('#det'); if (!el) return;
+  const campos = Object.entries(c.campos_visiveis||{});
+  el.innerHTML = `<div style="display:flex;gap:10px;align-items:center">${av(c)}<div><h3>${esc(c.nome||nomeC(c))}</h3><small style="color:var(--txt3)">${esc(nomeC(c))} - ${esc(c.canal)}</small></div></div>
+    <div><div class="rot">Etapa do funil</div><select class="campo" id="dEtapa">${F.map(e=>`<option ${e===c.etapa?'selected':''}>${esc(e)}</option>`).join('')}</select></div>
+    ${c.valor_fechado?`<div class="kv"><span>Fechou</span><b>${brl(c.valor_fechado)}</b><span>Procedimento</span><b>${esc(c.procedimento||'-')}</b></div>`:''}
+    <label style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span>Robo pausado (humano assume)</span>
+      <span class="chave"><input type="checkbox" id="dRobo" ${c.robo_pausado?'checked':''}><i></i></span></label>
+    <div><div class="rot">Tags</div><div id="dTags">${c.tags.map(t=>`<span class="tag">${esc(t)}<button data-t="${esc(t)}" title="Remover">x</button></span>`).join('')||'<small style="color:var(--txt3)">Sem tags</small>'}</div>
+      <input class="campo" id="novaTag" placeholder="Nova tag + Enter" style="margin-top:6px"></div>
+    <div><div class="rot">Respostas e campos</div><div class="kv" style="margin-top:6px">${campos.map(([k,v])=>`<span>${esc(k.replace(/_/g,' '))}</span><b>${esc(v)}</b>`).join('')||'<span>-</span>'}</div></div>
+    <div><div class="rot">Origem</div><div class="kv" style="margin-top:6px"><span>Entrou por</span><b>${esc(ORIGEM[c.origem]||c.origem||'-')}</b>
+      ${c.automacao_origem_nome?`<span>Automacao</span><b>${esc(c.automacao_origem_nome)}</b>`:''}
+      ${c.ad_id?`<span>Anuncio</span><b>${esc(c.ad_id)}</b>`:''}${c.post_id?`<span>Post</span><b>${esc(c.post_id)}</b>`:''}
+      <span>Primeiro contato</span><b>${dataBR(c.criado_em)}</b></div></div>
+    <div><div class="rot">Historico do funil</div>${d.historico.map(h=>`<div class="linha-hist"><span>${esc(h.etapa)}</span><span>${dataBR(h.quando)}</span></div>`).join('')}</div>`;
+  $('#dEtapa').onchange = e => mudarEtapa(c.id, e.target.value, () => abrirConversa(c.id, true));
+  $('#dRobo').onchange = async e => { await api('/api/contato/'+c.id, {method:'POST', body:{robo_pausado:e.target.checked}}); toast(e.target.checked?'Robo pausado para este contato':'Robo ligado de novo'); };
+  el.querySelectorAll('#dTags button').forEach(b => b.onclick = async () => { await api('/api/contato/'+c.id,{method:'POST',body:{tags:c.tags.filter(t=>t!==b.dataset.t)}}); abrirConversa(c.id,true); });
+  $('#novaTag').onkeydown = async e => { if (e.key==='Enter' && e.target.value.trim()){ await api('/api/contato/'+c.id,{method:'POST',body:{tags:[...c.tags,e.target.value.trim()]}}); abrirConversa(c.id,true); } };
+}
+function mudarEtapa(id, etapa, depois){
+  const fech = /fech/i.test(etapa);
+  if (!fech) return api(`/api/contato/${id}/etapa`,{method:'POST',body:{etapa}}).then(depois);
+  const m = document.createElement('div'); m.className='modal';
+  m.innerHTML = `<div class="card"><div style="font:600 20px var(--ft)">Fechou! Registrar a venda</div>
+    <input class="campo" id="mProc" placeholder="Procedimento (ex.: Metodo Fenix full face)">
+    <input class="campo" id="mVal" placeholder="Valor fechado (R$)" inputmode="decimal">
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn sec" id="mCanc">Cancelar</button><button class="btn" id="mOk">Salvar</button></div></div>`;
+  document.body.appendChild(m);
+  $('#mCanc').onclick = () => { m.remove(); depois && depois(); };
+  $('#mOk').onclick = async () => {
+    const r = await api(`/api/contato/${id}/etapa`,{method:'POST',body:{etapa, procedimento:$('#mProc').value, valor:$('#mVal').value}});
+    if (!r.ok) return toast(r.erro||'Erro'); m.remove(); depois && depois();
+  };
+}
+
+/* ============ FUNIL ============ */
+async function telaFunil(){
+  const d = await api('/api/conversas?limite=1000'); const cs = d.contatos || [];
+  $('#app').innerHTML = `<div class="kanban">${F.map(e => { const l = cs.filter(c=>c.etapa===e);
+    const soma = l.reduce((s,c)=>s+(c.valor_fechado||0),0);
+    return `<div class="coluna" data-e="${esc(e)}"><h4><span>${esc(e)}</span><span style="color:var(--txt3)">${l.length}${soma?' - '+brl(soma):''}</span></h4>
+    <div class="cards">${l.map(c => `<div class="kc" draggable="true" data-id="${c.id}"><div class="t">${av(c)}<div style="min-width:0"><b>${esc(nomeC(c))}</b><br><small style="color:var(--txt3)">${esc(ORIGEM[c.origem]||'')} - ${tempo(c.ultima_msg_em||c.criado_em)}</small></div></div>
+      ${(c.tags||[]).slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}${c.valor_fechado?`<div style="margin-top:6px;color:var(--bom);font-weight:700">${brl(c.valor_fechado)}</div>`:''}
+      <select class="campo">${F.map(x=>`<option ${x===c.etapa?'selected':''}>${esc(x)}</option>`).join('')}</select></div>`).join('')}</div></div>`; }).join('')}</div>`;
+  let arrastando = null;
+  document.querySelectorAll('.kc').forEach(k => {
+    k.ondragstart = () => arrastando = +k.dataset.id;
+    k.querySelector('select').onchange = e => mudarEtapa(+k.dataset.id, e.target.value, telaFunil);
+    k.ondblclick = () => { atual = +k.dataset.id; abrir('caixa'); };
+  });
+  document.querySelectorAll('.coluna').forEach(col => {
+    col.ondragover = e => { e.preventDefault(); col.classList.add('alvo'); };
+    col.ondragleave = () => col.classList.remove('alvo');
+    col.ondrop = e => { e.preventDefault(); col.classList.remove('alvo'); if (arrastando) mudarEtapa(arrastando, col.dataset.e, telaFunil); };
+  });
+}
+
+/* ============ AUTOMACOES ============ */
+async function telaAutomacoes(){
+  const d = await api('/api/automacoes?dias=30');
+  const ex = d.expediente || {};
+  $('#app').innerHTML = `<div class="pagina"><p style="color:var(--txt2);margin-top:0">Contadores dos ultimos ${d.dias} dias. Expediente: ${esc(ex.inicio||'')} as ${esc(ex.fim||'')}. Fora dele o robo avisa que a equipe responde depois e continua qualificando.</p>
+    <div class="grade">${d.automacoes.map(a => { const g = a.gatilho||{}, temPal = ['comentario','dm_palavra'].includes(g.tipo);
+      return `<div class="card aut" data-id="${esc(a.id)}"><div class="cab"><div><h3>${esc(a.nome)}</h3><span class="etq">${esc(GATILHO[g.tipo]||g.tipo)}</span>${a.inicia_fluxo?' <span class="etq">inicia qualificacao</span>':''}</div>
+        <label class="chave" title="Ligar ou desligar"><input type="checkbox" class="atv" ${a.ativa!==false?'checked':''}><i></i></label></div>
+        <div class="cont"><div><span class="rot">Disparos</span><strong>${int(a.disparos)}</strong></div><div><span class="rot">Responderam</span><strong>${int(a.responderam)}</strong></div><div><span class="rot">Qualificados</span><strong>${int(a.qualificados)}</strong></div></div>
+        ${temPal?`<div><div class="rot">Palavras-chave (separe por virgula)</div><input class="campo pal" value="${esc((g.palavras||[]).join(', '))}"></div>`:''}
+        ${g.tipo==='comentario'?`<div><div class="rot">Respostas publicas (uma por linha, o robo sorteia)</div><textarea class="campo pub" rows="3">${esc((a.resposta_publica||[]).join('\n'))}</textarea></div>`:''}
+        <div><div class="rot">Mensagem no Direct</div><textarea class="campo txt" rows="4">${esc(a.mensagem?.texto||'')}</textarea></div>
+        <div><div class="rot">Botoes (separe por virgula, ate 20 letras cada)</div><input class="campo ops" value="${esc((a.mensagem?.opcoes||[]).join(', '))}"></div>
+        <div style="text-align:right"><button class="btn salvar">Salvar</button></div></div>`; }).join('')}</div>
+    <h3 style="font:600 20px var(--ft);margin:24px 0 10px">Fluxo de qualificacao</h3>
+    ${Object.entries(d.fluxos||{}).map(([k,f]) => `<div class="card" style="padding:16px"><b>${esc(f.nome||k)}</b>${f.passos.map((p,i)=>`<div class="linha-hist"><span>${esc(p.pergunta)}</span><span>${esc((p.opcoes||[]).join(' / '))}</span></div>`).join('')}
+      <div class="linha-hist"><span>Final: ${esc(f.final?.texto||'')}</span><span>vai para ${esc(f.final?.etapa||'')}</span></div>
+      <small style="color:var(--txt3)">Para mudar as perguntas edite config/automacoes.json.</small></div>`).join('')}</div>`;
+  const lista = s => s.split(',').map(x=>x.trim()).filter(Boolean);
+  document.querySelectorAll('.aut').forEach(card => {
+    const id = card.dataset.id;
+    card.querySelector('.atv').onchange = async e => { await api('/api/automacoes/'+id,{method:'POST',body:{ativa:e.target.checked}}); toast(e.target.checked?'Automacao ligada':'Automacao desligada'); };
+    card.querySelector('.salvar').onclick = async () => {
+      const b = {texto: card.querySelector('.txt').value, opcoes: lista(card.querySelector('.ops').value)};
+      if (b.opcoes.some(o => o.length>20)) return toast('Cada botao pode ter no maximo 20 letras.');
+      if (card.querySelector('.pal')) b.palavras = lista(card.querySelector('.pal').value);
+      if (card.querySelector('.pub')) b.resposta_publica = card.querySelector('.pub').value.split('\n').map(x=>x.trim()).filter(Boolean);
+      const r = await api('/api/automacoes/'+id,{method:'POST',body:b}); toast(r.ok?'Salvo':'Erro ao salvar');
+    };
+  });
+}
+
+/* ============ NUMEROS ============ */
+let diasNum = 30;
+async function telaNumeros(){
+  const d = await api('/api/numeros?dias='+diasNum);
+  if (!d.ok){ $('#app').innerHTML = `<div class="pagina"><div class="vazio">${esc(d.erro||'Sem dados')}</div></div>`; return; }
+  const f = d.funil, taxa = (a,b) => b ? Math.round(a/b*100)+'%' : '-';
+  const hb = (rot, v, mx, dir) => `<div class="hbar"><span>${esc(rot)}</span><div class="t"><i style="width:${mx?Math.max(2,v/mx*100):0}%"></i></div><span>${dir??int(v)}</span></div>`;
+  const etapas = [['Conversas',f.conversas],['Qualificados',f.qualificados],['Agendaram',f.agendados],['Compareceram',f.compareceram],['Fecharam',f.fecharam]];
+  const mxO = Math.max(1,...d.por_origem.map(o=>o.total)), mxD = Math.max(1,...d.diario.map(x=>x.novos));
+  $('#app').innerHTML = `<div class="pagina">
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap"><span class="rot">Periodo</span>
+      ${[7,30,90].map(n=>`<button class="btn ${n===diasNum?'':'sec'} per" data-n="${n}">${n} dias</button>`).join('')}</div>
+    <div class="kpis">
+      <div class="card kpi"><div class="rot">Leads novos</div><div class="v">${int(d.contatos_novos)}</div><div class="d">entraram no periodo</div></div>
+      <div class="card kpi"><div class="rot">Qualificados</div><div class="v">${int(f.qualificados)}</div><div class="d">${taxa(f.qualificados,f.conversas)} das conversas</div></div>
+      <div class="card kpi"><div class="rot">Agendaram</div><div class="v">${int(f.agendados)}</div><div class="d">${taxa(f.agendados,f.qualificados)} dos qualificados</div></div>
+      <div class="card kpi"><div class="rot">Fecharam</div><div class="v">${int(f.fecharam)}</div><div class="d">${taxa(f.fecharam,f.compareceram)} de quem compareceu</div></div>
+      <div class="card kpi"><div class="rot">Faturamento</div><div class="v">${brl(f.faturamento)}</div><div class="d">ticket medio ${brl(d.ticket_medio)}</div></div>
+      <div class="card kpi"><div class="rot">1a resposta</div><div class="v">${d.tempo_primeira_resposta_min==null?'-':d.tempo_primeira_resposta_min+' min'}</div><div class="d">humana: ${d.tempo_primeira_resposta_humana_min==null?'-':d.tempo_primeira_resposta_humana_min+' min'}</div></div>
+    </div>
+    <div class="colunas">
+      <div class="card" style="padding:16px"><b>Funil do periodo</b>${etapas.map(([r,v])=>hb(r,v,f.conversas||1)).join('')}</div>
+      <div class="card" style="padding:16px"><b>De onde vieram</b>${d.por_origem.map(o=>hb(ORIGEM[o.origem]||o.origem,o.total,mxO)).join('')||'<p class="vazio">-</p>'}</div>
+      <div class="card" style="padding:16px"><b>Leads novos por dia</b><div class="barras">${d.diario.map(x=>`<i title="${x.data}: ${x.novos}" style="height:${x.novos/mxD*100}%"></i>`).join('')}</div>
+        <div style="display:flex;justify-content:space-between;color:var(--txt3);font-size:11px;margin-top:4px"><span>${d.diario[0]?.data.slice(8,10)}/${d.diario[0]?.data.slice(5,7)}</span><span>hoje</span></div></div>
+    </div>
+    <div class="colunas" style="margin-top:14px">
+      <div class="card" style="padding:16px;overflow-x:auto"><b>Automacoes</b><table><thead><tr><th>Automacao</th><th class="n">Disparos</th><th class="n">Qualificados</th></tr></thead>
+        <tbody>${d.automacoes.map(a=>`<tr><td>${esc(a.nome)}</td><td class="n">${int(a.disparos)}</td><td class="n">${int(a.qualificados)}</td></tr>`).join('')}</tbody></table></div>
+      <div class="card" style="padding:16px;overflow-x:auto"><b>Anuncios que trouxeram conversa</b><table><thead><tr><th>Anuncio</th><th class="n">Conversas</th><th class="n">Agend.</th><th class="n">Fech.</th><th class="n">Faturou</th></tr></thead>
+        <tbody>${d.por_anuncio.map(a=>`<tr><td>${esc(a.ad_id)}</td><td class="n">${int(a.conversas)}</td><td class="n">${int(a.agendados)}</td><td class="n">${int(a.fecharam)}</td><td class="n">${brl(a.faturamento)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--txt3)">Nenhum lead de anuncio no periodo</td></tr>'}</tbody></table></div>
+      <div class="card" style="padding:16px"><b>Procedimentos fechados</b>${(d.procedimentos||[]).map(p=>hb(p.procedimento,p.total,d.procedimentos[0].total,brl(p.total))).join('')||'<p class="vazio">-</p>'}</div>
+    </div></div>`;
+  document.querySelectorAll('.per').forEach(b => b.onclick = () => { diasNum = +b.dataset.n; telaNumeros(); });
+}
+
+function medirTopo(){ document.documentElement.style.setProperty('--topo', $('#app').getBoundingClientRect().top + 'px'); }
+addEventListener('resize', medirTopo); medirTopo();
+abrir('caixa');
+</script>
+</body>
+</html>
